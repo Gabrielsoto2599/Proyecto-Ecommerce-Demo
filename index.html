@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <title>Fazt | Home</title>
+    <link href="https://fonts.googleapis.com/css?family=Stint+Ultra+Condensed" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="header">
+        <div class="logo">
+    <src="logo.svg" alt="KS-Alta Eficiencia" style="height: 50px;">
+</div>
+    </header>
+
+    <nav class="navbar">
+    <a href="#">Inicio</a>
+    <a href="#">Quienes Somos</a>
+    <a href="#">Servicios</a>
+    <a href="#">Tarifas</a>
+    <a href="#">Localización</a>
+    
+    <a href="#tienda-motores" class="cart-link" style="margin-left: 20px; text-decoration: none; position: relative;">
+        <src="icon-carrito.svg" alt="Carrito" style="width: 25px; vertical-align: middle;">
+        <span id="cart-count" style="
+            background: red; 
+            color: white; 
+            border-radius: 50%; 
+            padding: 2px 6px; 
+            font-size: 10px; 
+            position: absolute; 
+            top: -10px; 
+            right: -10px;">0</span>
+    </a>
+</nav>
+
+    <section class="content who">
+        <h2 class="title">Quienes Somos</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
+    </section>
+      
+    <section class="content services">
+        <h2 class="title">Servicios</h2>
+        <ul class="image-container">
+            <li>
+    <figure>
+        <src="ico1.jpg" alt="Angular"> <figcaption>Motor Cummins - Sede Caracas</figcaption>
+    </figure>
+    
+    <button onclick="realizarCompraSimulada('Caracas', 1)" style="
+        background-color: #ff4d4d; 
+        color: white; 
+        padding: 8px 15px; 
+        border: none; 
+        border-radius: 4px; 
+        cursor: pointer; 
+        font-weight: bold;
+        margin-top: 10px;
+        width: 100%;">
+        Comprar Ahora
+    </button>
+
+    <li>
+    <figure>
+        <src="ico1.jpg" alt="Motor Valencia">
+        <figcaption>Motor Cummins - Sede Valencia</figcaption>
+    </figure>
+    <button onclick="realizarCompraSimulada('Valencia', 1)" style="background-color: #ff4d4d; 
+    color: white; padding: 8px 15px; 
+    border: none; border-radius: 4px; 
+    cursor: pointer; font-weight:
+    bold; margin-top: 10px; width: 100%;">
+        Comprar 1 Unidad
+    </button>
+</li>
+
+<li>
+    <figure>
+        <src="ico1.jpg" alt="Motor Maracaibo">
+        <figcaption>Motor Cummins - Sede Maracaibo</figcaption>
+    </figure>
+    <button onclick="realizarCompraSimulada('Maracaibo', 6)" 
+    style="background-color: #28a745; 
+    color: white; padding: 8px 15px; 
+    border: none; border-radius: 4px; 
+    cursor: pointer; font-weight: 
+    bold; margin-top: 10px; width: 100%;">
+        Compra al Mayor (6 Unid.)
+    </button>
+</li>
+
+</li>
+            </ul>
+    </section>
+   
+    <section class="content tarifas">
+        <article>
+            <h2 class="title">Tarifas</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
+        </article>
+        <a href="#" class="btn">Contáctanos</a>
+    </section>
+
+    <section class="content localization">
+        <h2 class="title">Localización</h2>
+        <figure class="map">
+            <src="dummy-mapa.jpg" alt="tienda-motores mapa">
+        </figure>
+    </section>
+
+</body>
+</html>
