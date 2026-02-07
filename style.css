@@ -90,5 +90,109 @@ figcaption {
     z-index: 10000;
 }
 
+/* LADO IZQUIERDO: La imagen del motor (Número 3) */
+.info-childs {
+    width: 45%;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    position: relative;
+    background-image: url('3.jpg'); /* <--- Nombre actualizado */
+    background-size: cover;
+    background-position: center;
+}
 
+/* LADO DERECHO: Fondo del formulario (Número 2) */
+.form-information {
+    width: 55%;
+    padding: 40px;
+    background-image: url('2.jpg'); /* <--- Nombre actualizado */
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
 
+/* Esto centra el cuadro blanco en la pantalla */
+.container-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Ocupa todo el alto */
+}
+
+/* Esto pone la imagen 3 a la izquierda y la imagen 2 a la derecha */
+.information {
+    display: flex; /* ¡ESTA ES LA LÍNEA MÁGICA! */
+    width: 800px;
+    height: 500px;
+    border-radius: 20px;
+    overflow: hidden;
+    background-color: white;
+}
+
+/* Mejora de los inputs para que no se vean 'apretados' */
+.form label {
+    display: flex;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.8); /* Fondo semi-transparente */
+    margin-bottom: 15px;
+    padding: 12px 15px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+.form input {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 1rem;
+    color: #333;
+}
+
+/* El botón de enviar ahora más grande y KS-Style */
+.form input[type="submit"] {
+    background-color: #e67e22;
+    color: white;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: 0.3s;
+    border: none;
+    width: 100%;
+}
+
+.form input[type="submit"]:hover {
+    background-color: #d35400;
+    transform: scale(1.02);
+}
+
+/* Estilo para los botones de intercambio (Iniciar Sesión / Registrarse del lado de la imagen) */
+.info-childs input[type="button"] {
+    background-color: transparent; /* Fondo transparente para que se vea el motor */
+    color: white;
+    border: 2px solid #e67e22; /* Borde naranja KS */
+    padding: 12px 30px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1rem;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    margin-top: 20px;
+}
+
+.info-childs input[type="button"]:hover {
+    background-color: #e67e22; /* Se llena de naranja al pasar el mouse */
+    color: white;
+    box-shadow: 0 0 15px rgba(230, 126, 34, 0.5); /* Brillo sutil */
+    transform: translateY(-2px);
+}
