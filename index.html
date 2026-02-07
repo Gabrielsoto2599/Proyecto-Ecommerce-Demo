@@ -2,95 +2,74 @@
 <html lang="es">
 <head>
     <meta charset="utf-8">
-    <title>Fazt | Home</title>
-    <link href="https://fonts.googleapis.com/css?family=Stint+Ultra+Condensed" rel="stylesheet">
+    <title>KS-Alta Eficiencia | Prototipo</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body style="margin: 0; font-family: 'Roboto Condensed', sans-serif; background-color: #f0f2f5;">
 
-    <header class="header" style="display: flex; justify-content: center; align-items: center; padding: 20px; background-color: #1a1a1a;"></header>
-        <img src="logo.svg.svg" alt="KS-Alta Eficiencia" style="height: 100px; width: auto;">
+    <header class="header" style="height: 60px; background-color: #1a1a1a;"></header>
+
+    <nav class="navbar" style="display: flex; justify-content: center; align-items: center; background: #333; padding: 15px; position: sticky; top: 0; z-index: 1000;">
+        <a href="#" style="color: white; margin: 0 15px; text-decoration: none; font-weight: bold;">CATÁLOGO</a>
+        <a href="#login" id="open-login" style="color: #e67e22; margin: 0 15px; text-decoration: none; font-weight: bold;">INICIAR SESIÓN / REGISTRO</a>
+        
+        <a href="#carrito" class="cart-link" style="margin-left: 20px; text-decoration: none; position: relative;">
+            <img src="icon-carrito.svg" alt="Carrito" style="width: 25px; vertical-align: middle;">
+            <span id="cart-count" style="background: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; position: absolute; top: -10px; right: -10px;">0</span>
+        </a>
+    </nav>
+
+    <main class="container" style="max-width: 1200px; margin: 40px auto; padding: 0 20px;">
+        <h1 style="text-align: center; color: #333; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 40px;">Motores Disponibles por Sede</h1>
+        
+        <section class="services">
+            <ul class="image-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; padding: 0; list-style: none;">
+                
+                <li style="background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); overflow: hidden; text-align: center; padding-bottom: 20px;">
+                    <figure style="margin: 0;">
+                        <img src="motor_cummins.svg" alt="Motor Caracas" style="width: 100%; height: 180px; object-fit: contain; background: #eee;">
+                        <figcaption style="font-size: 1.1rem; font-weight: bold; margin: 15px 0;">Sede Caracas</figcaption>
+                    </figure>
+                    <button onclick="realizarCompraSimulada('Caracas', 1)" style="background: #e67e22; color: white; border: none; padding: 10px 20px; border-radius: 20px; cursor: pointer; font-weight: bold;">COMPRAR AHORA</button>
+                </li>
+
+                <li style="background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); overflow: hidden; text-align: center; padding-bottom: 20px;">
+                    <figure style="margin: 0;">
+                        <img src="motor_cummins.svg" alt="Motor Valencia" style="width: 100%; height: 180px; object-fit: contain;">
+                    </figure>
+                    <button onclick="realizarCompraSimulada('Valencia', 1)" style="background: #e67e22; color: white; border: none; padding: 10px 20px; border-radius: 20px; cursor: pointer; font-weight: bold;">COMPRAR AHORA</button>
+                </li>
+
+                <li style="background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); overflow: hidden; text-align: center; padding-bottom: 20px;">
+                    <figure style="margin: 0;">
+                        <img src="motor_cummins.svg" alt="Motor Maracaibo" style="width: 100%; height: 180px; object-fit: contain; background: #eee;">
+                        <figcaption style="font-size: 1.1rem; font-weight: bold; margin: 15px 0;">Sede Maracaibo</figcaption>
+                    </figure>
+                    <button onclick="realizarCompraSimulada('Maracaibo', 1)" style="background: #e67e22; color: white; border: none; padding: 10px 20px; border-radius: 20px; cursor: pointer; font-weight: bold;">COMPRAR AHORA</button>
+                </li>
+
+                <li style="background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); overflow: hidden; text-align: center; padding-bottom: 20px;">
+                    <figure style="margin: 0;">
+                        <img src="motor_cummins.svg" alt="Motor Puerto Ordaz" style="width: 100%; height: 180px; object-fit: contain;">
+                    </figure>
+                    <button onclick="realizarCompraSimulada('Puerto Ordaz', 1)" style="background: #e67e22; color: white; border: none; padding: 10px 20px; border-radius: 20px; cursor: pointer; font-weight: bold;">COMPRAR AHORA</button>
+                </li>
+
+            </ul>
+        </section>
+    </main>
+
+    <div id="login-modal-root"></div>
+
+    <div id="modal-registro" class="modal-container">
+        <div class="container-form register"> ... </div>
+        <div class="container-form login hide"> ... </div>
     </div>
-</header>
 
-    <nav class="navbar">
-    <a href="#">Inicio</a>
-    <a href="#">Quienes Somos</a>
-    <a href="#">Servicios</a>
-    <a href="#">Tarifas</a>
-    <a href="#">Localización</a>
-    
-    <a href="#tienda-motores" class="cart-link" style="margin-left: 20px; text-decoration: none; position: relative;">
-        <img src="icon-carrito.svg" alt="Carrito" style="width: 25px; vertical-align: middle;">
-        <span id="cart-count" style="
-            background: red; 
-            color: white; 
-            border-radius: 50%; 
-            padding: 2px 6px; 
-            font-size: 10px; 
-            position: absolute; 
-            top: -10px; 
-            right: -10px;">0</span>
-    </a>
-</nav>
-
-    <section class="content who">
-        <h2 class="title">Quienes Somos</h2>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
-    </section>
-      
-    <section class="content services">
-        <h2 class="title">Servicios</h2>
-        <ul class="image-container">
-    <li>
-        <figure>
-            <img src="motor_cummins.svg" alt="Motor Cummins Caracas" style="width: 100%; border-radius: 8px;">
-            <figcaption>Sede Caracas</figcaption>
-        </figure>
-        <button onclick="realizarCompraSimulada('Caracas', 1)" class="btn-compra">Comprar Ahora</button>
-    </li>
-
-    <li>
-        <figure>
-            <img src="motor_cummins.svg" alt="Motor Cummins Valencia" style="width: 100%; border-radius: 8px;">
-            <figcaption>Sede Valencia</figcaption>
-        </figure>
-        <button onclick="realizarCompraSimulada('Valencia', 1)" class="btn-compra">Comprar Ahora</button>
-    </li>
-
-    <li>
-        <figure>
-            <img src="motor_cummins.svg" alt="Motor Cummins Maracaibo" style="width: 100%; border-radius: 8px;">
-            <figcaption>Sede Maracaibo</figcaption>
-        </figure>
-        <button onclick="realizarCompraSimulada('Maracaibo', 1)" class="btn-compra">Comprar Ahora</button>
-    </li>
-
-    <li>
-        <figure>
-            <img src="motor_cummins.svg" alt="Motor Cummins Puerto Ordaz" style="width: 100%; border-radius: 8px;">
-            <figcaption>Sede Puerto Ordaz</figcaption>
-        </figure>
-        <button onclick="realizarCompraSimulada('Puerto Ordaz', 1)" class="btn-compra">Comprar Ahora</button>
-    </li>
-</ul>
-    </section>
-   
-    <section class="content tarifas">
-        <article>
-            <h2 class="title">Tarifas</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
-        </article>
-        <a href="#" class="btn">Contáctanos</a>
-    </section>
-
-    <section class="content localization">
-        <h2 class="title">Localización</h2>
-        <figure class="map">
-            <img src="dummy-mapa.jpg" alt="tienda-motores mapa">
-        </figure>
-    </section>
-
+    <script src="script.js"></script>
 </body>
 </html>
+
+
+
