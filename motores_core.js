@@ -1,4 +1,10 @@
-// --- 1. LÓGICA DE NEGOCIO ---
+// ==========================================
+// 1. CONFIGURACIÓN Y ESTADO GLOBAL
+// ==========================================
+const TASA_BCV = 36.50; // Puedes actualizar este valor mañana
+let mostrarEnBolivares = false;
+let inventario = [];
+
 class Cl_Producto {
     constructor(nombre, sede, precioBase, cantidad = 1) {
         this.nombre = nombre;
@@ -8,7 +14,7 @@ class Cl_Producto {
     }
     montoVenta() {
         let subtotal = this.precioBase * this.cantidad;
-        if (this.cantidad >= 12) subtotal *= 0.85; // Descuento B2B
+        if (this.cantidad >= 12) subtotal *= 0.85; // Descuento Mayorista
         return this.sede === "Puerto Ordaz" ? subtotal : subtotal * 1.05;
     }
 }
@@ -25,69 +31,48 @@ class Cl_Empresa {
 }
 
 const empresaKS = new Cl_Empresa();
-let inventario = [];
 
-// --- 2. INICIO ---
+// ==========================================
+// 2. INICIO DE LA APLICACIÓN
+// ==========================================
 document.addEventListener('DOMContentLoaded', () => {
     configurarEventos();
     cargarInventario();
 });
 
 function configurarEventos() {
-    const btnLogin = document.getElementById('open-login');
-    const btnCatalogo = document.getElementById('btn-catalogo');
+    // Evento para el botón de moneda (Usa delegación de eventos para mayor seguridad)
+    document.addEventListener('click', (e) => {
+        const btnMoneda = e.target.closest('#btn-moneda');
+        if (btnMoneda) {
+            mostrarEnBolivares = !mostrarEnBolivares;
+            const textoBtn = document.getElementById('texto-boton-moneda');
+            textoBtn.innerText = mostrarEnBolivares ? "Ver en Dólares ($)" : `Ver en Bs. (Tasa: ${TASA_BCV})`;
+            renderizar(inventario);
+        }
 
-    if (btnLogin) {
-        btnLogin.onclick = (e) => { e.preventDefault(); mostrarInterfazLogin(true); };
-    }
-    if (btnCatalogo) {
-        btnCatalogo.onclick = (e) => {
+        // Abrir login
+        if (e.target.closest('#open-login')) {
             e.preventDefault();
-            document.getElementById('seccion-inventario').scrollIntoView({ behavior: 'smooth' });
-        };
-    }
+            mostrarInterfazLogin(true);
+        }
+    });
 }
 
-// --- 3. LOGIN RECUPERADO Y MEJORADO ---
-function mostrarInterfazLogin(esLogin) {
-    const root = document.getElementById('modal-root');
-    root.innerHTML = `
-    <div class="overlay">
-        <div class="information">
-            <div class="info-childs" style="background-color: #1a1a1a; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; padding: 20px; flex: 1;">
-                <h2 style="margin-bottom: 10px;">${esLogin ? '¡Hola!' : 'Registro'}</h2>
-                <p style="font-size: 0.8rem; opacity: 0.8;">Acceso exclusivo para distribuidores KS.</p>
-                <input type="button" value="${esLogin ? 'REGISTRAR' : 'LOGIN'}" id="btn-switch" class="btn-ks-outline" style="margin-top: 20px;">
-            </div>
-            <div class="form-information" style="background: white; flex: 1.5; padding: 30px;">
-                <h2 style="color: #333; margin-bottom: 20px;">${esLogin ? 'Iniciar Sesión' : 'Nueva Cuenta'}</h2>
-                <form id="f-login">
-                    <input type="email" placeholder="Correo" required style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 5px;">
-                    <input type="password" placeholder="Contraseña" required style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 5px;">
-                    <input type="submit" value="CONTINUAR" class="btn-ks">
-                    <button type="button" onclick="document.getElementById('modal-root').innerHTML=''" style="width: 100%; background: none; border: none; color: #999; margin-top: 10px; cursor: pointer;">Cerrar</button>
-                </form>
-            </div>
-        </div>
-    </div>`;
-
-    document.getElementById('btn-switch').onclick = () => mostrarInterfazLogin(!esLogin);
-}
-
-// --- 4. CARGA DE CATÁLOGO (CON RESPALDO INTEGRADO) ---
+// ==========================================
+// 3. CARGA Y RENDERIZADO (EL CORAZÓN)
+// ==========================================
 async function cargarInventario() {
     try {
         const res = await fetch('ventas.json');
-        if (!res.ok) throw new Error();
         inventario = await res.json();
     } catch (err) {
-        // SI EL JSON FALLA, USAMOS ESTOS DATOS AUTOMÁTICAMENTE
+        // Datos de prueba por si el JSON no carga
         inventario = [
-            { "id": 1, "sede": "Caracas", "producto": "Aceite 10W-40 Sintético", "precio": 12.5, "stock": 150 },
-            { "id": 11, "sede": "Valencia", "producto": "Aceite 15W-40 Diesel", "precio": 9.5, "stock": 180 },
-            { "id": 21, "sede": "Maracaibo", "producto": "Filtro Gasolina", "precio": 4.5, "stock": 150 },
-            { "id": 31, "sede": "Puerto Ordaz", "producto": "Pistón Cummins Heavy", "precio": 120.0, "stock": 8 }
-            // Agregué solo 4 para no saturar el código, pero el renderizador los tomará.
+            { "id": 1, "sede": "Caracas", "producto": "Aceite 10W-40 Sintético", "precio": 12.5 },
+            { "id": 11, "sede": "Valencia", "producto": "Aceite 15W-40 Diesel", "precio": 9.5 },
+            { "id": 21, "sede": "Maracaibo", "producto": "Filtro Gasolina", "precio": 4.5 },
+            { "id": 31, "sede": "Puerto Ordaz", "producto": "Pistón Cummins Heavy", "precio": 120.0 }
         ];
     }
     renderizar(inventario);
@@ -95,50 +80,107 @@ async function cargarInventario() {
 
 function renderizar(data) {
     const lista = document.getElementById('lista-productos');
-    lista.innerHTML = data.map(p => `
-        <li class="producto-card">
-            <span class="badge">${p.sede}</span>
-            <div style="font-size: 3rem; margin: 10px 0;">${p.producto.includes('Aceite') ? '🛢️' : '⚙️'}</div>
-            <h3 style="font-size: 0.9rem;">${p.producto}</h3>
-            <p style="color: #b8860b; font-weight: bold; font-size: 1.1rem;">$${p.precio.toFixed(2)}</p>
-            <div style="margin-top: 10px; display: flex; justify-content: center; gap: 5px;">
-                <input type="number" id="q-${p.id}" value="1" min="1" style="width: 40px; border-radius: 4px; border: 1px solid #ccc;">
-                <button class="btn-add" onclick="procesarCompra(${p.id})">AÑADIR</button>
+    if (!lista) return;
+
+    lista.className = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8";
+
+    lista.innerHTML = data.map(p => {
+        // Lógica de Moneda
+        const precioFinal = mostrarEnBolivares ? (p.precio * TASA_BCV) : p.precio;
+        const simbolo = mostrarEnBolivares ? "Bs." : "$";
+        const rutaImagen = `${p.producto}.jpg`; 
+
+        return `
+        <li class="bg-white rounded-2xl shadow-sm hover:shadow-2xl transition-all duration-500 border border-gray-100 p-6 flex flex-col items-center relative group overflow-hidden">
+            <span class="absolute top-4 right-4 bg-black text-amber-500 text-[10px] font-black px-3 py-1 rounded-lg uppercase tracking-widest z-10 shadow-md">
+                ${p.sede}
+            </span>
+            
+            <div class="w-full h-44 mb-6 flex items-center justify-center overflow-hidden rounded-xl bg-gray-50 p-2">
+                <img src="${rutaImagen}" 
+                     alt="${p.producto}" 
+                     class="object-contain h-full w-full group-hover:scale-110 transition-transform duration-500"
+                     onerror="this.src='motores_v8.svg'; this.style.opacity='0.5';"> 
             </div>
-        </li>
-    `).join('');
+
+            <div class="text-center w-full">
+                <h3 class="text-gray-900 font-black text-[11px] mb-2 uppercase tracking-tight h-10 flex items-center justify-center leading-tight">
+                    ${p.producto}
+                </h3>
+                
+                <p class="text-2xl font-black text-gray-900 tracking-tighter mb-4">
+                    ${simbolo}${precioFinal.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                </p>
+                
+                <div class="flex items-center gap-2 w-full pt-4 border-t border-gray-100">
+                    <input type="number" id="q-${p.id}" value="1" min="1" 
+                           class="w-12 bg-gray-50 border border-gray-200 rounded-lg p-2 text-center text-xs font-bold outline-none focus:ring-2 focus:ring-amber-500">
+                    <button onclick="procesarCompra(${p.id})" 
+                            class="flex-1 bg-black hover:bg-amber-600 text-white font-black py-2.5 rounded-lg transition-all duration-300 text-[10px] tracking-widest uppercase shadow-md active:scale-95">
+                        Añadir
+                    </button>
+                </div>
+            </div>
+        </li>`;
+    }).join('');
 }
 
+// ==========================================
+// 4. LÓGICA DE COMPRA Y MODALES
+// ==========================================
 function procesarCompra(id) {
     const item = inventario.find(i => i.id === id);
     const cant = parseInt(document.getElementById(`q-${id}`).value);
     const pedido = new Cl_Producto(item.producto, item.sede, item.precio, cant);
+    
     empresaKS.procesar(pedido);
     document.getElementById('cart-count').innerText = empresaKS.contVentas;
     mostrarRecibo(pedido);
 }
 
 function mostrarRecibo(pedido) {
+    const precioFinal = mostrarEnBolivares ? (pedido.montoVenta() * TASA_BCV) : pedido.montoVenta();
+    const simbolo = mostrarEnBolivares ? "Bs." : "$";
+
     document.getElementById('modal-root').innerHTML = `
-    <div class="overlay">
-        <div class="factura-modal">
-            <h2 style="color: #b8860b;">ORDEN KS</h2>
-            <hr>
-            <p style="text-align: left; font-size: 0.9rem; margin-top: 10px;">
-                <strong>Item:</strong> ${pedido.nombre}<br>
-                <strong>Sede:</strong> ${pedido.sede}<br>
-                <strong>Cant:</strong> ${pedido.cantidad}
-            </p>
-            <h3 style="margin: 15px 0;">TOTAL: $${pedido.montoVenta().toFixed(2)}</h3>
-            <button class="btn-ks" onclick="document.getElementById('modal-root').innerHTML=''">CONFIRMAR</button>
+    <div class="overlay flex items-center justify-center fixed inset-0 bg-black/50 z-[100]">
+        <div class="bg-white p-8 rounded-3xl text-center border-t-8 border-amber-600 shadow-2xl w-[320px]">
+            <h2 class="text-amber-600 font-black text-xl uppercase italic">Orden KS</h2>
+            <div class="my-4 text-left text-xs space-y-2 border-y py-4 border-gray-100 font-bold text-gray-600 uppercase">
+                <p>Producto: <span class="text-black">${pedido.nombre}</span></p>
+                <p>Sede: <span class="text-black">${pedido.sede}</span></p>
+                <p>Cantidad: <span class="text-black">${pedido.cantidad}</span></p>
+            </div>
+            <h3 class="text-3xl font-black mb-6">${simbolo}${precioFinal.toLocaleString('es-VE', { minimumFractionDigits: 2 })}</h3>
+            <button onclick="document.getElementById('modal-root').innerHTML=''" class="w-full bg-black text-white font-black py-3 rounded-xl uppercase tracking-widest hover:bg-amber-600 transition">Confirmar</button>
+        </div>
+    </div>`;
+}
+
+function mostrarInterfazLogin(esLogin) {
+    // Mantengo tu lógica de login pero encapsulada
+    const root = document.getElementById('modal-root');
+    root.innerHTML = `
+    <div class="overlay flex items-center justify-center fixed inset-0 bg-black/60 z-[100]">
+        <div class="bg-white flex flex-col md:flex-row rounded-3xl overflow-hidden shadow-2xl max-w-4xl w-11/12 h-[500px]">
+            <div class="bg-black text-white p-12 flex flex-col justify-center items-center text-center space-y-4 flex-1">
+                <h2 class="text-3xl font-black italic uppercase italic">KS Alta Eficiencia</h2>
+                <p class="text-xs tracking-widest opacity-60">DISTRIBUIDORES EXCLUSIVOS</p>
+            </div>
+            <div class="p-12 flex-1 flex flex-col justify-center bg-white">
+                <h2 class="text-2xl font-black mb-6 text-gray-800 uppercase italic">Acceso B2B</h2>
+                <input type="email" placeholder="Usuario" class="mb-3 p-3 bg-gray-50 rounded-xl border-none ring-1 ring-gray-200 outline-none focus:ring-2 focus:ring-amber-500">
+                <input type="password" placeholder="Clave" class="mb-6 p-3 bg-gray-50 rounded-xl border-none ring-1 ring-gray-200 outline-none focus:ring-2 focus:ring-amber-500">
+                <button onclick="document.getElementById('modal-root').innerHTML=''" class="bg-black text-white font-black py-3 rounded-xl uppercase tracking-widest hover:bg-amber-600 transition">Entrar</button>
+                <button onclick="document.getElementById('modal-root').innerHTML=''" class="mt-4 text-[10px] font-bold text-gray-400 uppercase tracking-widest">Regresar al catálogo</button>
+            </div>
         </div>
     </div>`;
 }
 
 
-
-
     
+
 
 
 
