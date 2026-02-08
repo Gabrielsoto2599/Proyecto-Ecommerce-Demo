@@ -196,3 +196,79 @@ figcaption {
     box-shadow: 0 0 15px rgba(230, 126, 34, 0.5); /* Brillo sutil */
     transform: translateY(-2px);
 }
+
+.producto-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+.badge-sede {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #333;
+    color: white;
+    padding: 2px 10px;
+    border-radius: 10px;
+    font-size: 0.7rem;
+}
+.icon-placeholder {
+    font-size: 3rem;
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 50%;
+    margin-bottom: 15px;
+}
+.overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 5000;
+}
+.factura-modal {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    width: 320px;
+}
+.btn-cerrar {
+    width: 100%;
+    background: #b8860b;
+    color: white;
+    border: none;
+    padding: 10px;
+    margin-top: 20px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.85); display: flex; justify-content: center; align-items: center; z-index: 9999;
+}
+.information {
+    display: flex; width: 700px; border-radius: 15px; overflow: hidden; background: white;
+}
+.producto-card {
+    background: white; border-radius: 10px; padding: 20px; list-style: none;
+    text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); position: relative;
+}
+.badge {
+    position: absolute; top: 10px; right: 10px; background: #333; color: white; padding: 2px 8px; border-radius: 5px; font-size: 0.7rem;
+}
+.btn-ks {
+    background: #b8860b; color: white; border: none; padding: 10px; width: 100%; cursor: pointer; border-radius: 5px;
+}
+.btn-ks-outline {
+    background: transparent; border: 1px solid white; color: white; padding: 10px; cursor: pointer; border-radius: 20px;
+}
+.btn-add {
+    background: #333; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 5px;
+}
