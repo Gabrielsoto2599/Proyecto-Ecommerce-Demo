@@ -1,275 +1,113 @@
-/* Reset básico para que todo encaje */
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: 'Roboto Condensed', sans-serif;
+/* ==========================================
+   ESTILOS BASE Y FUENTES
+   ========================================== */
+:root {
+    --ks-amber: #b8860b;
+    --ks-black: #000000;
+    --ks-gray: #f3f4f6;
 }
 
 body {
-    background-color: #f4f4f4; /* Un gris muy claro para que resalten las tarjetas */
+    margin: 0;
+    padding: 0;
+    background-color: var(--ks-gray);
+    overflow-x: hidden;
 }
 
-/* Contenedor de las tarjetas de motores */
-.image-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 30px;
-    padding: 40px 20px;
-    list-style: none;
-}
-
-/* Estilo de cada tarjeta (el <li>) */
-.image-container li {
-    background: white;
-    border-radius: 12px;
-    padding: 20px;
-    width: 280px;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.08);
-    transition: all 0.3s ease;
-    text-align: center;
-}
-
-.image-container li:hover {
-    transform: translateY(-10px); /* La tarjeta "flota" al pasar el mouse */
-    box-shadow: 0 15px 30px rgba(0,0,0,0.15);
-}
-
-/* Ajuste de imágenes y textos */
-.image-container figure img {
-    width: 100%;
-    height: 180px;
-    object-fit: cover; /* Para que todas las fotos se vean del mismo tamaño */
-    border-radius: 8px;
-}
-
-figcaption {
-    margin: 15px 0;
-    font-size: 1.1rem;
-    font-weight: bold;
-    color: #333;
-}
-
-/* Mejorando el Navbar para que el carrito no se mueva */
-.navbar {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #222;
-    padding: 15px;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-}
-
-.navbar a {
-    color: white;
-    text-decoration: none;
-    margin: 0 15px;
-    font-weight: bold;
-}
-
-/* Contenedor principal del Modal */
-.modal-container {
-    display: none; /* Oculto por defecto */
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background-color: rgba(0, 0, 0, 0.8); /* Fondo oscuro */
-    z-index: 9999; /* Por encima de todo */
-}
-
-/* Para cerrar el modal al hacer clic fuera */
-.modal-container.show {
-    display: block;
-}
-
-/* Ajuste para que tu .information no se pierda */
-.information {
-    z-index: 10000;
-}
-
-/* LADO IZQUIERDO: La imagen del motor (Número 3) */
-.info-childs {
-    width: 45%;
-    padding: 40px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    color: white;
-    position: relative;
-    background-image: url('3.jpg'); /* <--- Nombre actualizado */
-    background-size: cover;
-    background-position: center;
-}
-
-/* LADO DERECHO: Fondo del formulario (Número 2) */
-.form-information {
-    width: 55%;
-    padding: 40px;
-    background-image: url('2.jpg'); /* <--- Nombre actualizado */
-    background-size: cover;
-    background-position: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-/* Esto centra el cuadro blanco en la pantalla */
-.container-form {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh; /* Ocupa todo el alto */
-}
-
-/* Esto pone la imagen 3 a la izquierda y la imagen 2 a la derecha */
-.information {
-    display: flex; /* ¡ESTA ES LA LÍNEA MÁGICA! */
-    width: 800px;
-    height: 500px;
-    border-radius: 20px;
-    overflow: hidden;
-    background-color: white;
-}
-
-/* Mejora de los inputs para que no se vean 'apretados' */
-.form label {
-    display: flex;
-    align-items: center;
-    background-color: rgba(255, 255, 255, 0.8); /* Fondo semi-transparente */
-    margin-bottom: 15px;
-    padding: 12px 15px;
-    border-radius: 8px;
-    border: 1px solid #ddd;
-}
-
-.form input {
-    width: 100%;
-    border: none;
-    outline: none;
-    background: transparent;
-    font-size: 1rem;
-    color: #333;
-}
-
-/* El botón de enviar ahora más grande y KS-Style */
-.form input[type="submit"] {
-    background-color: #e67e22;
-    color: white;
-    padding: 12px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
-    text-transform: uppercase;
-    transition: 0.3s;
-    border: none;
-    width: 100%;
-}
-
-.form input[type="submit"]:hover {
-    background-color: #d35400;
-    transform: scale(1.02);
-}
-
-/* Estilo para los botones de intercambio (Iniciar Sesión / Registrarse del lado de la imagen) */
-.info-childs input[type="button"] {
-    background-color: transparent; /* Fondo transparente para que se vea el motor */
-    color: white;
-    border: 2px solid #e67e22; /* Borde naranja KS */
-    padding: 12px 30px;
-    border-radius: 25px;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 1rem;
-    text-transform: uppercase;
-    transition: all 0.3s ease;
-    margin-top: 20px;
-}
-
-.info-childs input[type="button"]:hover {
-    background-color: #e67e22; /* Se llena de naranja al pasar el mouse */
-    color: white;
-    box-shadow: 0 0 15px rgba(230, 126, 34, 0.5); /* Brillo sutil */
-    transform: translateY(-2px);
-}
-
-.producto-card {
-    background: white;
-    border-radius: 12px;
-    padding: 20px;
-    text-align: center;
-    position: relative;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
-.badge-sede {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: #333;
-    color: white;
-    padding: 2px 10px;
-    border-radius: 10px;
-    font-size: 0.7rem;
-}
-.icon-placeholder {
-    font-size: 3rem;
-    background: #f9f9f9;
-    padding: 20px;
-    border-radius: 50%;
-    margin-bottom: 15px;
-}
+/* ==========================================
+   MODALES Y OVERLAYS (CAPAS SUPERPUESTAS)
+   ========================================== */
 .overlay {
     position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0,0,0,0.8);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px); /* Efecto de desenfoque premium */
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 5000;
+    z-index: 9999;
+    animation: fadeIn 0.3s ease-out;
 }
+
+/* Animación de entrada para los modales */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
 .factura-modal {
     background: white;
-    padding: 30px;
-    border-radius: 15px;
-    width: 320px;
-}
-.btn-cerrar {
-    width: 100%;
-    background: #b8860b;
-    color: white;
-    border: none;
-    padding: 10px;
-    margin-top: 20px;
-    cursor: pointer;
-    font-weight: bold;
+    padding: 2.5rem;
+    border-radius: 2rem;
+    width: 90%;
+    max-width: 350px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    transform: scale(1);
+    animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.overlay {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.85); display: flex; justify-content: center; align-items: center; z-index: 9999;
+@keyframes popIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
 }
-.information {
-    display: flex; width: 700px; border-radius: 15px; overflow: hidden; background: white;
+
+/* ==========================================
+   BOTONES Y EFECTOS PERSONALIZADOS
+   ========================================== */
+/* Botón de cambio de moneda con estilo neobrutalista */
+#btn-moneda {
+    box-shadow: 4px 4px 0px 0px rgba(0,0,0,1);
+    transition: all 0.2s ease;
 }
+
+#btn-moneda:active {
+    box-shadow: 0px 0px 0px 0px rgba(0,0,0,1);
+    transform: translate(2px, 2px);
+}
+
+/* Tarjetas de productos */
 .producto-card {
-    background: white; border-radius: 10px; padding: 20px; list-style: none;
-    text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-.badge {
-    position: absolute; top: 10px; right: 10px; background: #333; color: white; padding: 2px 8px; border-radius: 5px; font-size: 0.7rem;
+
+.producto-card:hover {
+    transform: translateY(-10px);
 }
-.btn-ks {
-    background: #b8860b; color: white; border: none; padding: 10px; width: 100%; cursor: pointer; border-radius: 5px;
+
+/* Scrollbar personalizada para que combine con el diseño */
+::-webkit-scrollbar {
+    width: 8px;
 }
-.btn-ks-outline {
-    background: transparent; border: 1px solid white; color: white; padding: 10px; cursor: pointer; border-radius: 20px;
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
 }
-.btn-add {
-    background: #333; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 5px;
+
+::-webkit-scrollbar-thumb {
+    background: var(--ks-black);
+    border-radius: 10px;
 }
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--ks-amber);
+}
+
+/* ==========================================
+   ESTILOS PARA EL LOGIN (OVERRIDE)
+   ========================================== */
+.form-information input:focus {
+    border-color: var(--ks-amber);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(184, 134, 11, 0.2);
+}
+
+/* Estilo del botón de añadir para que tenga "click" visual */
+button:active {
+    transform: scale(0.95);
+}
+
+
 
