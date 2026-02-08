@@ -138,6 +138,7 @@ function procesarCompra(id) {
     mostrarRecibo(pedido);
 }
 
+// NUEVA VERSIÓN DE MOSTRAR RECIBO CON BOTÓN PDF
 function mostrarRecibo(pedido) {
     const precioFinal = mostrarEnBolivares ? (pedido.montoVenta() * TASA_BCV) : pedido.montoVenta();
     const simbolo = mostrarEnBolivares ? "Bs." : "$";
@@ -152,10 +153,53 @@ function mostrarRecibo(pedido) {
                 <p>Cantidad: <span class="text-black">${pedido.cantidad}</span></p>
             </div>
             <h3 class="text-3xl font-black mb-6">${simbolo}${precioFinal.toLocaleString('es-VE', { minimumFractionDigits: 2 })}</h3>
-            <button onclick="document.getElementById('modal-root').innerHTML=''" class="w-full bg-black text-white font-black py-3 rounded-xl uppercase tracking-widest hover:bg-amber-600 transition">Confirmar</button>
+            <div class="flex flex-col gap-2">
+                <button onclick="generarPDF_B2B('${pedido.nombre}', '${pedido.sede}', ${pedido.cantidad}, ${precioFinal}, '${simbolo}')" 
+                        class="w-full bg-amber-600 text-white font-black py-3 rounded-xl uppercase tracking-widest hover:bg-amber-700 transition">
+                    Descargar Factura PDF
+                </button>
+                <button onclick="document.getElementById('modal-root').innerHTML=''" 
+                        class="w-full bg-black text-white font-black py-3 rounded-xl uppercase tracking-widest hover:bg-gray-800 transition">
+                    Cerrar
+                </button>
+            </div>
         </div>
     </div>`;
 }
+
+// ESTA FUNCIÓN VA AL FINAL DE TU ARCHIVO (Es la que crea el PDF)
+function generarPDF_B2B(prod, sede, cant, total, moneda) {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    
+    // Diseño del PDF
+    doc.setFontSize(22);
+    doc.setTextColor(184, 134, 11); // Color ámbar de tu marca
+    doc.text("KS ALTA EFICIENCIA", 10, 20);
+    
+    doc.setFontSize(16);
+    doc.setTextColor(0, 0, 0);
+    doc.text("REPORTE DE PEDIDO B2B", 10, 30);
+    
+    doc.setFontSize(12);
+    doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 10, 45);
+    doc.text(`Sede de Despacho: ${sede}`, 10, 55);
+    
+    doc.setLineWidth(0.5);
+    doc.line(10, 60, 200, 60); // Línea divisoria
+    
+    doc.text(`Detalle del Producto: ${prod}`, 10, 70);
+    doc.text(`Cantidad Solicitada: ${cant} unidades`, 10, 80);
+    doc.text(`Monto Total: ${moneda} ${total.toLocaleString('es-VE', { minimumFractionDigits: 2 })}`, 10, 90);
+    
+    doc.setFontSize(10);
+    doc.setTextColor(100, 100, 100);
+    doc.text("Este documento es un comprobante digital generado por el sistema de gestión de KS.", 10, 110);
+    
+    // Descarga el archivo
+    doc.save(`Pedido_KS_${sede}_${prod}.pdf`);
+}
+
 
 function mostrarInterfazLogin(esLogin) {
     // Mantengo tu lógica de login pero encapsulada
@@ -180,6 +224,7 @@ function mostrarInterfazLogin(esLogin) {
 
 
     
+
 
 
 
