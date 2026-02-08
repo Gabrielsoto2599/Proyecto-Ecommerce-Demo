@@ -1,160 +1,139 @@
-//**
-// --- 1. SECCIÓN DE LÓGICA (POO) ---
-class Cl_Motor {
-    constructor(sede, precioBase) {
+/// --- 1. LÓGICA DE NEGOCIO ---
+class Cl_Producto {
+    constructor(nombre, sede, precioBase, cantidad = 1) {
+        this.nombre = nombre;
         this.sede = sede;
         this.precioBase = precioBase;
+        this.cantidad = cantidad;
     }
     montoVenta() {
-        // Lógica heredada de Netflix: Recargo del 10% si NO es Puerto Ordaz
-        return this.sede === "Puerto Ordaz" ? this.precioBase : this.precioBase * 1.10;
+        let subtotal = this.precioBase * this.cantidad;
+        if (this.cantidad >= 12) subtotal *= 0.85; // Descuento Mayorista
+        return this.sede === "Puerto Ordaz" ? subtotal : subtotal * 1.05;
     }
 }
 
 class Cl_Empresa {
     constructor() {
         this.contVentas = 0;
-        this.acumulado = 0;
+        this.totalFacturado = 0;
     }
-    procesar(motor) {
-        this.contVentas++;
-        this.acumulado += motor.montoVenta();
+    procesar(prod) {
+        this.contVentas += prod.cantidad;
+        this.totalFacturado += prod.montoVenta();
     }
 }
 
 const empresaKS = new Cl_Empresa();
-let datosDeSedes = []; // Aquí se guarda la info del JSON
+let inventario = [];
 
-// --- 2. INICIO Y CARGA DE DATOS ---
+// --- 2. INICIO ---
 document.addEventListener('DOMContentLoaded', () => {
-    configurarLogin();
-    cargarInventarioJSON();
+    configurarEventos();
+    cargarInventario();
 });
 
-async function cargarInventarioJSON() {
+function configurarEventos() {
+    // Botón Login
+    document.getElementById('open-login').addEventListener('click', (e) => {
+        e.preventDefault();
+        mostrarInterfazLogin(true);
+    });
+
+    // Botón Catálogo (Scroll)
+    document.getElementById('btn-catalogo').addEventListener('click', (e) => {
+        e.preventDefault();
+        document.getElementById('seccion-inventario').scrollIntoView({ behavior: 'smooth' });
+    });
+}
+
+// --- 3. LÓGICA DEL LOGIN (RECUPERADA) ---
+function mostrarInterfazLogin(esLogin) {
+    const root = document.getElementById('modal-root');
+    root.innerHTML = `
+    <div id="modal-overlay" class="overlay">
+        <div class="information">
+            <div class="info-childs" style="background: #1a1a1a; color: white; padding: 40px; text-align: center;">
+                <h2>${esLogin ? '¡Bienvenido!' : '¡Únete a KS!'}</h2>
+                <p>${esLogin ? 'Accede para gestionar pedidos.' : 'Regístrate para precios mayoristas.'}</p>
+                <input type="button" value="${esLogin ? 'REGISTRARSE' : 'INICIAR SESIÓN'}" id="btn-switch-view" class="btn-ks-outline">
+            </div>
+            <div class="form-information" style="background: white; padding: 40px; width: 100%;">
+                <h2 style="color: #333;">${esLogin ? 'Iniciar Sesión' : 'Crear Cuenta'}</h2>
+                <form id="login-form" class="form">
+                    ${!esLogin ? '<input type="text" placeholder="Nombre de la Empresa" required style="width:100%; margin-bottom:10px; padding:10px;">' : ''}
+                    <input type="email" placeholder="Correo Electrónico" required style="width:100%; margin-bottom:10px; padding:10px;">
+                    <input type="password" placeholder="Contraseña" required style="width:100%; margin-bottom:10px; padding:10px;">
+                    <input type="submit" value="${esLogin ? 'ENTRAR' : 'REGISTRAR'}" class="btn-ks">
+                    <button type="button" onclick="document.getElementById('modal-root').innerHTML=''" style="background:none; border:none; color:gray; cursor:pointer; width:100%; margin-top:10px;">Cerrar</button>
+                </form>
+            </div>
+        </div>
+    </div>`;
+
+    document.getElementById('btn-switch-view').addEventListener('click', () => mostrarInterfazLogin(!esLogin));
+    document.getElementById('login-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        alert(esLogin ? "Sesión iniciada como Mayorista" : "Registro completado");
+        root.innerHTML = '';
+    });
+}
+
+// --- 4. CARGA DE CATÁLOGO ---
+async function cargarInventario() {
     try {
         const res = await fetch('ventas.json');
-        if (!res.ok) throw new Error("No se pudo leer el JSON");
-        datosDeSedes = await res.json();
-        console.log("✅ Inventario cargado desde JSON exitosamente");
+        inventario = await res.json();
+        renderizar(inventario);
     } catch (err) {
-        console.error("⚠️ Error cargando JSON, usando datos de respaldo:", err.message);
-        // Respaldo por si falla la lectura del archivo
-        datosDeSedes = [
-            { "sede": "Caracas", "precio": 3000 },
-            { "sede": "Valencia", "precio": 3200 },
-            { "sede": "Maracaibo", "precio": 2800 },
-            { "sede": "Puerto Ordaz", "precio": 4000 }
-        ];
+        console.error("Error", err);
     }
 }
 
-// --- 3. INTERFAZ DE LOGIN Y REGISTRO (SINCRONIZADA) ---
-function configurarLogin() {
-    const btnOpenLogin = document.getElementById('open-login');
-    const modalRoot = document.getElementById('login-modal-root');
-
-    if (btnOpenLogin && modalRoot) {
-        btnOpenLogin.addEventListener('click', (e) => {
-            e.preventDefault();
-            mostrarInterfazLogin(modalRoot, true); // true = vista login por defecto
-        });
-    }
+function renderizar(data) {
+    const lista = document.getElementById('lista-productos');
+    lista.innerHTML = data.map(p => `
+        <li class="producto-card">
+            <span class="badge">${p.sede}</span>
+            <div style="font-size: 3rem; margin: 15px 0;">${p.producto.includes('Aceite') ? '🛢️' : '⚙️'}</div>
+            <h3 style="font-size: 1rem;">${p.producto}</h3>
+            <p style="font-weight: bold; color: #b8860b;">$${p.precio.toFixed(2)}</p>
+            <div style="margin-top: 10px;">
+                <input type="number" id="q-${p.id}" value="1" min="1" style="width: 45px;">
+                <button class="btn-add" onclick="procesarCompra(${p.id})">AÑADIR</button>
+            </div>
+        </li>
+    `).join('');
 }
 
-function mostrarInterfazLogin(contenedor, esLogin) {
-    contenedor.innerHTML = `
-    <div id="modal-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: flex; justify-content: center; align-items: center; z-index: 2000; cursor: pointer;">
-        <div class="container-form" style="cursor: default;">
-            <div class="information">
-                <div class="info-childs">
-                    <h2>${esLogin ? '¡Bienvenido!' : '¡Únete a KS!'}</h2>
-                    <p>${esLogin ? 'Para gestionar pedidos, inicia sesión.' : 'Regístrate para obtener precios mayoristas.'}</p>
-                    <input type="button" value="${esLogin ? 'Registrarse' : 'Iniciar Sesión'}" id="btn-switch-view" style="background: transparent; border: 1px solid white; color: white; padding: 10px 20px; border-radius: 20px; cursor: pointer; margin-top: 20px;">
-                </div>
-                <div class="form-information">
-                    <div class="form-information-childs">
-                        <h2>${esLogin ? 'Iniciar Sesión' : 'Crear Cuenta'}</h2>
-                        <form class="form" id="login-register-form">
-                            ${!esLogin ? `
-                                <label><input type="text" placeholder="Nombre Completo" required></label>
-                                <label>
-                                    <select style="width: 100%; padding: 10px; margin-top: 10px; border-radius: 5px; border: 1px solid #ddd;">
-                                        <option value="detal">Cliente al Detal</option>
-                                        <option value="mayorista">Mayorista</option>
-                                    </select>
-                                </label>
-                            ` : ''}
-                            <label><input type="email" placeholder="Correo Electrónico" required></label>
-                            <label><input type="password" placeholder="Contraseña" required></label>
-                            
-                            <input type="submit" value="${esLogin ? 'Entrar' : 'Crear Cuenta'}" style="margin-bottom: 10px;">
-                            
-                            <input type="button" value="Cerrar" id="btn-cerrar-m" style="background: none; color: #888; border: none; cursor: pointer;">
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>`;
-
-    // Cerrar modal
-    const cerrar = () => contenedor.innerHTML = '';
-    document.getElementById('modal-overlay').addEventListener('click', (e) => {
-        if(e.target.id === 'modal-overlay' || e.target.id === 'btn-cerrar-m') cerrar();
-    });
-
-    // Intercambiar vistas (Login <-> Registro)
-    document.getElementById('btn-switch-view').addEventListener('click', () => {
-        mostrarInterfazLogin(contenedor, !esLogin);
-    });
-
-    // Simular envío de formulario
-    document.getElementById('login-register-form').addEventListener('submit', (e) => {
-        e.preventDefault();
-        alert(esLogin ? "Sesión Iniciada" : "Cuenta Creada");
-        cerrar();
-    });
+function procesarCompra(id) {
+    const item = inventario.find(i => i.id === id);
+    const cant = parseInt(document.getElementById(`q-${id}`).value);
+    
+    const pedido = new Cl_Producto(item.producto, item.sede, item.precio, cant);
+    empresaKS.procesar(pedido);
+    
+    document.getElementById('cart-count').innerText = empresaKS.contVentas;
+    mostrarRecibo(pedido);
 }
 
-// --- 4. SISTEMA DE COMPRAS Y FACTURA MODAL ---
-function realizarCompraSimulada(nombreSede) {
-    const sedeInfo = datosDeSedes.find(s => s.sede === nombreSede);
-    if (!sedeInfo) return;
-
-    // Lógica de Negocio (Clases)
-    const miMotor = new Cl_Motor(sedeInfo.sede, sedeInfo.precio);
-    empresaKS.procesar(miMotor);
-
-    // Actualizar Carrito Visual
-    const cartCount = document.getElementById('cart-count');
-    if(cartCount) cartCount.innerText = empresaKS.contVentas;
-
-    // Mostrar Factura con Cierre al Clic Afuera
-    const modalRoot = document.getElementById('login-modal-root');
-    modalRoot.innerHTML = `
-    <div id="factura-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: flex; justify-content: center; align-items: center; z-index: 3000; cursor: pointer;">
-        <div style="background: white; padding: 40px; border-radius: 15px; width: 350px; cursor: default; box-shadow: 0 10px 30px rgba(0,0,0,0.5); text-align: left;">
-            <h2 style="text-align: center; color: #e67e22; border-bottom: 2px solid #eee; padding-bottom: 10px;">RECIBO KS</h2>
-            <div style="margin: 20px 0;">
-                <p><strong>Sede:</strong> ${miMotor.sede}</p>
-                <p><strong>Precio Base:</strong> $${miMotor.precioBase}</p>
-                <p><strong>Recargo Conexión:</strong> $${(miMotor.montoVenta() - miMotor.precioBase).toFixed(2)}</p>
-                <hr>
-                <p style="font-size: 1.2rem;"><strong>TOTAL: $${miMotor.montoVenta().toFixed(2)}</strong></p>
-            </div>
-            <button id="btn-ok" style="width: 100%; background: #333; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer;">ACEPTAR</button>
-            <p style="text-align: center; font-size: 0.7rem; color: #999; margin-top: 10px;">Haz clic fuera para cerrar</p>
+function mostrarRecibo(pedido) {
+    const root = document.getElementById('modal-root');
+    root.innerHTML = `
+    <div class="overlay">
+        <div class="factura-modal">
+            <h2 style="color: #b8860b;">FACTURA B2B</h2>
+            <p><strong>Sede:</strong> ${pedido.sede}</p>
+            <p><strong>Item:</strong> ${pedido.nombre} (x${pedido.cantidad})</p>
+            <p><strong>Total:</strong> $${pedido.montoVenta().toFixed(2)}</p>
+            ${pedido.cantidad >= 12 ? '<p style="color:green; font-size:0.8rem;">Descuento por caja aplicado</p>' : ''}
+            <button class="btn-ks" onclick="document.getElementById('modal-root').innerHTML=''">ACEPTAR</button>
         </div>
     </div>`;
-
-    const cerrarFactura = () => modalRoot.innerHTML = '';
-    document.getElementById('factura-overlay').addEventListener('click', (e) => {
-        if(e.target.id === 'factura-overlay' || e.target.id === 'btn-ok') cerrarFactura();
-    });
 }
 
 
     
+
 
 
