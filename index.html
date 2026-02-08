@@ -2,74 +2,40 @@
 <html lang="es">
 <head>
     <meta charset="utf-8">
-    <title>KS-Alta Eficiencia | Prototipo</title>
+    <title>KS-Alta Eficiencia | Ecosistema B2B</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body style="margin: 0; font-family: 'Roboto Condensed', sans-serif; background-color: #f0f2f5;">
 
-    <header class="header" style="height: 60px; background-color: #1a1a1a;"></header>
-
-    <nav class="navbar" style="display: flex; justify-content: center; align-items: center; background: #333; padding: 15px; position: sticky; top: 0; z-index: 1000;">
-        <a href="#" style="color: white; margin: 0 15px; text-decoration: none; font-weight: bold;">CATÁLOGO</a>
-        <a href="#login" id="open-login" style="color: #e67e22; margin: 0 15px; text-decoration: none; font-weight: bold;">INICIAR SESIÓN / REGISTRO</a>
+    <nav class="navbar">
+        <div style="font-weight: bold; color: white; font-size: 1.5rem; margin-right: auto; margin-left: 20px;">KS-ALTA EFICIENCIA</div>
+        <a href="#" id="btn-catalogo">CATÁLOGO B2B</a>
+        <a href="#login" id="open-login" style="color: #b8860b;">INICIAR SESIÓN / REGISTRO</a>
         
-        <div class="container-cart-icon" style="margin-left: 20px; position: relative; cursor: pointer; display: flex; align-items: center;">
-            <img src="icon-carrito.svg" alt="Carrito" class="icon-cart" style="width: 30px;">
-            <span id="cart-count" class="count-products" style="background: #e67e22; color: white; border-radius: 50%; width: 20px; height: 20px; display: flex; justify-content: center; align-items: center; font-size: 11px; font-weight: bold; position: absolute; top: -8px; right: -12px; box-shadow: 0 2px 5px rgba(0,0,0,0.3);">0</span>
+        <div class="container-cart-icon" style="margin-left: 20px; position: relative; cursor: pointer;">
+            <span style="font-size: 1.5rem;">🛒</span>
+            <span id="cart-count" class="count-products">0</span>
         </div>
     </nav>
 
     <main class="container" style="max-width: 1200px; margin: 40px auto; padding: 0 20px;">
-        <h1 style="text-align: center; color: #333; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 40px;">Motores Disponibles por Sede</h1>
+        <header id="inicio" style="text-align: center; margin-bottom: 50px;">
+            <h1 style="color: #333; text-transform: uppercase; letter-spacing: 2px;">Fábrica de Lubricantes y Repuestos</h1>
+            <p style="color: #666;">Gestión Centralizada de 4 Sedes (Caracas, Valencia, Maracaibo, Pto. Ordaz)</p>
+        </header>
         
-        <section class="services">
-            <ul class="image-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; padding: 0; list-style: none;">
-                
-                <li style="background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); overflow: hidden; text-align: center; padding-bottom: 20px;">
-                    <figure style="margin: 0;">
-                        <img src="motor_cummins.svg" alt="Motor Caracas" style="width: 100%; height: 180px; object-fit: contain; background: #eee;">
-                        <figcaption style="font-size: 1.1rem; font-weight: bold; margin: 15px 0;">Sede Caracas</figcaption>
-                    </figure>
-                    <button onclick="realizarCompraSimulada('Caracas', 1)" style="background: #e67e22; color: white; border: none; padding: 10px 20px; border-radius: 20px; cursor: pointer; font-weight: bold;">COMPRAR AHORA</button>
-                </li>
-
-                <li style="background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); overflow: hidden; text-align: center; padding-bottom: 20px;">
-                    <figure style="margin: 0;">
-                        <img src="motor_cummins.svg" alt="Motor Valencia" style="width: 100%; height: 180px; object-fit: contain;">
-                        <figcaption style="font-size: 1.1rem; font-weight: bold; margin: 15px 0;">Sede Valencia</figcaption>
-                    </figure>
-                    <button onclick="realizarCompraSimulada('Valencia', 1)" style="background: #e67e22; color: white; border: none; padding: 10px 20px; border-radius: 20px; cursor: pointer; font-weight: bold;">COMPRAR AHORA</button>
-                </li>
-
-                <li style="background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); overflow: hidden; text-align: center; padding-bottom: 20px;">
-                    <figure style="margin: 0;">
-                        <img src="motor_cummins.svg" alt="Motor Maracaibo" style="width: 100%; height: 180px; object-fit: contain; background: #eee;">
-                        <figcaption style="font-size: 1.1rem; font-weight: bold; margin: 15px 0;">Sede Maracaibo</figcaption>
-                    </figure>
-                    <button onclick="realizarCompraSimulada('Maracaibo', 1)" style="background: #e67e22; color: white; border: none; padding: 10px 20px; border-radius: 20px; cursor: pointer; font-weight: bold;">COMPRAR AHORA</button>
-                </li>
-
-                <li style="background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); overflow: hidden; text-align: center; padding-bottom: 20px;">
-                    <figure style="margin: 0;">
-                        <img src="motor_cummins.svg" alt="Motor Puerto Ordaz" style="width: 100%; height: 180px; object-fit: contain;">
-                        <figcaption style="font-size: 1.1rem; font-weight: bold; margin: 15px 0;">Sede Puerto Ordaz</figcaption>
-                    </figure>
-                    <button onclick="realizarCompraSimulada('Puerto Ordaz', 1)" style="background: #e67e22; color: white; border: none; padding: 10px 20px; border-radius: 20px; cursor: pointer; font-weight: bold;">COMPRAR AHORA</button>
-                </li>
-
-            </ul>
+        <section id="seccion-inventario">
+            <h2 style="text-align: center; margin-bottom: 30px; color: #b8860b;">Inventario Disponible por Sucursal</h2>
+            <ul id="lista-productos" class="image-container">
+                </ul>
         </section>
     </main>
 
-    <div id="login-modal-root"></div>
+    <div id="modal-root"></div>
 
-    <script src="motores_core.js"></script>
+    <script src="ks_core.js"></script>
 </body>
 </html>
-
-
-
-
 
 
