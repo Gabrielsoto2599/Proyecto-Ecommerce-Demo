@@ -1,5 +1,5 @@
 [
-  { "id": 1, "producto": "Aceite 10W-40 Sintético", "precio": 12.50, "stock": 10, "sede": "Caracas" },
+  { "id": 1, "producto": "Aceite 10W-40 Sintetico", "precio": 12.50, "stock": 10, "sede": "Caracas" },
   { "id": 2, "producto": "Aceite 15W-40 Diesel", "precio": 9.50, "stock": 10, "sede": "Caracas" },
   { "id": 3, "producto": "Filtro Gasolina", "precio": 4.50, "stock": 10, "sede": "Caracas" },
   { "id": 4, "producto": "Pistón Cummins Heavy", "precio": 120.00, "stock": 10, "sede": "Caracas" },
@@ -10,7 +10,7 @@
   { "id": 9, "producto": "filtro_aire", "precio": 8.00, "stock": 10, "sede": "Caracas" },
   { "id": 10, "producto": "pastillas_freno", "precio": 35.00, "stock": 10, "sede": "Caracas" },
 
-  { "id": 11, "producto": "Aceite 10W-40 Sintético", "precio": 12.50, "stock": 10, "sede": "Valencia" },
+  { "id": 11, "producto": "Aceite 10W-40 Sintetico", "precio": 12.50, "stock": 10, "sede": "Valencia" },
   { "id": 12, "producto": "Aceite 15W-40 Diesel", "precio": 9.50, "stock": 10, "sede": "Valencia" },
   { "id": 13, "producto": "Filtro Gasolina", "precio": 4.50, "stock": 10, "sede": "Valencia" },
   { "id": 14, "producto": "Pistón Cummins Heavy", "precio": 120.00, "stock": 10, "sede": "Valencia" },
@@ -21,7 +21,7 @@
   { "id": 19, "producto": "filtro_aire", "precio": 8.00, "stock": 10, "sede": "Valencia" },
   { "id": 20, "producto": "pastillas_freno", "precio": 35.00, "stock": 10, "sede": "Valencia" },
 
-  { "id": 21, "producto": "Aceite 10W-40 Sintético", "precio": 12.50, "stock": 10, "sede": "Maracaibo" },
+  { "id": 21, "producto": "Aceite 10W-40 Sintetico", "precio": 12.50, "stock": 10, "sede": "Maracaibo" },
   { "id": 22, "producto": "Aceite 15W-40 Diesel", "precio": 9.50, "stock": 10, "sede": "Maracaibo" },
   { "id": 23, "producto": "Filtro Gasolina", "precio": 4.50, "stock": 10, "sede": "Maracaibo" },
   { "id": 24, "producto": "Pistón Cummins Heavy", "precio": 120.00, "stock": 10, "sede": "Maracaibo" },
@@ -43,6 +43,4 @@
   { "id": 39, "producto": "filtro_aire", "precio": 8.00, "stock": 10, "sede": "Puerto Ordaz" },
   { "id": 40, "producto": "pastillas_freno", "precio": 35.00, "stock": 10, "sede": "Puerto Ordaz" }
 ]
-
-
 
