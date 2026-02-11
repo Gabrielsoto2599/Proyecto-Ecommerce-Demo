@@ -78,6 +78,24 @@ async function cargarInventario() {
     renderizar(inventario);
 }
 
+// ==========================================
+// NUEVA LÓGICA DE NAVEGACIÓN Y STOCK
+// ==========================================
+
+let sedeActual = 'Todas'; // Controla qué estamos viendo
+
+// 1. Función para filtrar por sede (Se activa con los botones del HTML)
+function filtrarSede(sede) {
+    sedeActual = sede;
+    
+    // Filtramos el inventario según la sede seleccionada
+    const dataFiltrada = sede === 'Todas' ? inventario : inventario.filter(p => p.sede === sede);
+    
+    // Volvemos a dibujar los productos en pantalla
+    renderizar(dataFiltrada);
+}
+
+// 2. Renderizado Actualizado (Ahora muestra el stock)
 function renderizar(data) {
     const lista = document.getElementById('lista-productos');
     if (!lista) return;
@@ -85,39 +103,42 @@ function renderizar(data) {
     lista.className = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8";
 
     lista.innerHTML = data.map(p => {
-        // Lógica de Moneda
         const precioFinal = mostrarEnBolivares ? (p.precio * TASA_BCV) : p.precio;
         const simbolo = mostrarEnBolivares ? "Bs." : "$";
         const rutaImagen = `${p.producto}.jpg`; 
 
         return `
         <li class="bg-white rounded-2xl shadow-sm hover:shadow-2xl transition-all duration-500 border border-gray-100 p-6 flex flex-col items-center relative group overflow-hidden">
-            <span class="absolute top-4 right-4 bg-black text-amber-500 text-[10px] font-black px-3 py-1 rounded-lg uppercase tracking-widest z-10 shadow-md">
+            <span class="absolute top-4 right-4 bg-black text-amber-500 text-[10px] font-black px-3 py-1 rounded-lg uppercase tracking-widest z-10">
                 ${p.sede}
             </span>
             
-            <div class="w-full h-44 mb-6 flex items-center justify-center overflow-hidden rounded-xl bg-gray-50 p-2">
+            <div class="w-full h-44 mb-6 flex items-center justify-center rounded-xl bg-gray-50 p-2">
                 <img src="${rutaImagen}" 
-                     alt="${p.producto}" 
-                     class="object-contain h-full w-full group-hover:scale-110 transition-transform duration-500"
-                     onerror="this.src='motores_v8.svg'; this.style.opacity='0.5';"> 
+                     onerror="this.src='motores_v8.svg'; this.style.opacity='0.5';" 
+                     class="object-contain h-full w-full group-hover:scale-110 transition-transform duration-500"> 
             </div>
 
             <div class="text-center w-full">
-                <h3 class="text-gray-900 font-black text-[11px] mb-2 uppercase tracking-tight h-10 flex items-center justify-center leading-tight">
+                <h3 class="text-gray-900 font-black text-[11px] mb-1 uppercase tracking-tight h-10 flex items-center justify-center leading-tight">
                     ${p.producto}
                 </h3>
                 
+                <p class="text-[9px] font-bold text-gray-400 mb-2 uppercase">
+                    Disponible: <span class="${p.stock < 5 ? 'text-red-500' : 'text-green-600'}">${p.stock} unidades</span>
+                </p>
+
                 <p class="text-2xl font-black text-gray-900 tracking-tighter mb-4">
-                    ${simbolo}${precioFinal.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    ${simbolo}${precioFinal.toLocaleString('es-VE', { minimumFractionDigits: 2 })}
                 </p>
                 
                 <div class="flex items-center gap-2 w-full pt-4 border-t border-gray-100">
-                    <input type="number" id="q-${p.id}" value="1" min="1" 
+                    <input type="number" id="q-${p.id}" value="1" min="1" max="${p.stock}" 
                            class="w-12 bg-gray-50 border border-gray-200 rounded-lg p-2 text-center text-xs font-bold outline-none focus:ring-2 focus:ring-amber-500">
                     <button onclick="procesarCompra(${p.id})" 
-                            class="flex-1 bg-black hover:bg-amber-600 text-white font-black py-2.5 rounded-lg transition-all duration-300 text-[10px] tracking-widest uppercase shadow-md active:scale-95">
-                        Añadir
+                            ${p.stock <= 0 ? 'disabled' : ''}
+                            class="${p.stock <= 0 ? 'bg-gray-300 cursor-not-allowed' : 'bg-black hover:bg-amber-600'} flex-1 text-white font-black py-2.5 rounded-lg transition-all duration-300 text-[10px] tracking-widest uppercase shadow-md active:scale-95">
+                        ${p.stock <= 0 ? 'Agotado' : 'Añadir'}
                     </button>
                 </div>
             </div>
@@ -125,16 +146,32 @@ function renderizar(data) {
     }).join('');
 }
 
-// ==========================================
-// 4. LÓGICA DE COMPRA Y MODALES
-// ==========================================
+// 3. Procesar Compra con Descuento de Stock Real
 function procesarCompra(id) {
     const item = inventario.find(i => i.id === id);
-    const cant = parseInt(document.getElementById(`q-${id}`).value);
+    const cantInput = document.getElementById(`q-${id}`);
+    const cant = parseInt(cantInput.value);
+
+    // Validación de seguridad
+    if (cant > item.stock) {
+        alert("Lo sentimos, no hay suficiente stock en esta sede.");
+        return;
+    }
+
+    // EL MOMENTO CLAVE: Restamos del stock local
+    item.stock -= cant;
+
+    // Creamos el objeto del pedido (Aquí ya aplica tu lógica de descuento > 12)
     const pedido = new Cl_Producto(item.producto, item.sede, item.precio, cant);
-    
     empresaKS.procesar(pedido);
+    
+    // Actualizamos el contador del carrito en el menú
     document.getElementById('cart-count').innerText = empresaKS.contVentas;
+    
+    // Refrescamos la lista para que se vea el stock actualizado
+    filtrarSede(sedeActual);
+    
+    // Mostramos el recibo/modal
     mostrarRecibo(pedido);
 }
 
@@ -222,7 +259,10 @@ function mostrarInterfazLogin(esLogin) {
     </div>`;
 }
 
-
+document.getElementById('btn-catalogo').addEventListener('click', (e) => {
+    e.preventDefault();
+    document.getElementById('seccion-inventario').scrollIntoView({ behavior: 'smooth' });
+});
     
 
 
