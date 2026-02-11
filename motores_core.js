@@ -64,15 +64,17 @@ function configurarEventos() {
 // ==========================================
 async function cargarInventario() {
     try {
-        const res = await fetch('ventas.json');
-        if (!res.ok) throw new Error("No se pudo cargar el archivo JSON");
+        // Añadimos un preventivo de caché para que GitHub siempre lea la última versión
+        const res = await fetch('./ventas.json?v=' + Date.now()); 
+        if (!res.ok) throw new Error("Error HTTP: " + res.status);
         inventario = await res.json();
-        console.log("Inventario cargado exitosamente:", inventario.length, "productos.");
+        renderizar(inventario);
     } catch (err) {
-        console.error("Error crítico:", err);
-        alert("Atención: El inventario no cargó. Verifica que el archivo ventas.json esté en la carpeta correcta.");
+        console.error("Fallo en la carga:", err);
+        // Si falla, cargamos al menos uno manualmente para que la página no se vea vacía
+        inventario = [{ "id": 99, "producto": "Error de Carga", "precio": 0, "stock": 0, "sede": "N/A" }];
+        renderizar(inventario);
     }
-    renderizar(inventario);
 }
 // ==========================================
 // NUEVA LÓGICA DE NAVEGACIÓN Y STOCK
@@ -261,5 +263,8 @@ document.getElementById('btn-catalogo').addEventListener('click', (e) => {
     document.getElementById('seccion-inventario').scrollIntoView({ behavior: 'smooth' });
 });
     
+
+
+
 
 
