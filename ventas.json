@@ -32,7 +32,7 @@
   { "id": 29, "producto": "filtro_aire", "precio": 8.00, "stock": 10, "sede": "Maracaibo" },
   { "id": 30, "producto": "pastillas_freno", "precio": 35.00, "stock": 10, "sede": "Maracaibo" },
 
-  { "id": 31, "producto": "Aceite 10W-40 Sintético", "precio": 12.50, "stock": 10, "sede": "Puerto Ordaz" },
+  { "id": 31, "producto": "Aceite 10W-40 Sintetico", "precio": 12.50, "stock": 10, "sede": "Puerto Ordaz" },
   { "id": 32, "producto": "Aceite 15W-40 Diesel", "precio": 9.50, "stock": 10, "sede": "Puerto Ordaz" },
   { "id": 33, "producto": "Filtro Gasolina", "precio": 4.50, "stock": 10, "sede": "Puerto Ordaz" },
   { "id": 34, "producto": "Pistón Cummins Heavy", "precio": 120.00, "stock": 10, "sede": "Puerto Ordaz" },
@@ -43,4 +43,5 @@
   { "id": 39, "producto": "filtro_aire", "precio": 8.00, "stock": 10, "sede": "Puerto Ordaz" },
   { "id": 40, "producto": "pastillas_freno", "precio": 35.00, "stock": 10, "sede": "Puerto Ordaz" }
 ]
+
 
