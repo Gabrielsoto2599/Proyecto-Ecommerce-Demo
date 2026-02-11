@@ -65,19 +65,15 @@ function configurarEventos() {
 async function cargarInventario() {
     try {
         const res = await fetch('ventas.json');
+        if (!res.ok) throw new Error("No se pudo cargar el archivo JSON");
         inventario = await res.json();
+        console.log("Inventario cargado exitosamente:", inventario.length, "productos.");
     } catch (err) {
-        // Datos de prueba por si el JSON no carga
-        inventario = [
-            { "id": 1, "sede": "Caracas", "producto": "Aceite 10W-40 Sintético", "precio": 12.5 },
-            { "id": 11, "sede": "Valencia", "producto": "Aceite 15W-40 Diesel", "precio": 9.5 },
-            { "id": 21, "sede": "Maracaibo", "producto": "Filtro Gasolina", "precio": 4.5 },
-            { "id": 31, "sede": "Puerto Ordaz", "producto": "Pistón Cummins Heavy", "precio": 120.0 }
-        ];
+        console.error("Error crítico:", err);
+        alert("Atención: El inventario no cargó. Verifica que el archivo ventas.json esté en la carpeta correcta.");
     }
     renderizar(inventario);
 }
-
 // ==========================================
 // NUEVA LÓGICA DE NAVEGACIÓN Y STOCK
 // ==========================================
@@ -106,6 +102,7 @@ function renderizar(data) {
         const precioFinal = mostrarEnBolivares ? (p.precio * TASA_BCV) : p.precio;
         const simbolo = mostrarEnBolivares ? "Bs." : "$";
         const rutaImagen = `${p.producto}.jpg`; 
+// Esto buscará exactamente "Aceite 10W-40 Sintético.jpg" 
 
         return `
         <li class="bg-white rounded-2xl shadow-sm hover:shadow-2xl transition-all duration-500 border border-gray-100 p-6 flex flex-col items-center relative group overflow-hidden">
@@ -264,9 +261,5 @@ document.getElementById('btn-catalogo').addEventListener('click', (e) => {
     document.getElementById('seccion-inventario').scrollIntoView({ behavior: 'smooth' });
 });
     
-
-
-
-
 
 
