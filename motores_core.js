@@ -139,32 +139,74 @@ function procesarCompra(id) {
     mostrarRecibo(pedido);
 }
 
-function mostrarInterfazLogin(esLogin) {
-    // Mantengo tu lógica de login pero encapsulada
-    const root = document.getElementById('modal-root');
-    root.innerHTML = `
-    <div class="overlay flex items-center justify-center fixed inset-0 bg-black/60 z-[100]">
-        <div class="bg-white flex flex-col md:flex-row rounded-3xl overflow-hidden shadow-2xl max-w-4xl w-11/12 h-[500px]">
-            <div class="bg-black text-white p-12 flex flex-col justify-center items-center text-center space-y-4 flex-1">
-                <h2 class="text-3xl font-black italic uppercase italic">KS Alta Eficiencia</h2>
-                <p class="text-xs tracking-widest opacity-60">DISTRIBUIDORES EXCLUSIVOS</p>
+function mostrarRecibo(pedido) {
+    const precioFinal = mostrarEnBolivares ? (pedido.montoVenta() * TASA_BCV) : pedido.montoVenta();
+    const simbolo = mostrarEnBolivares ? "Bs." : "$";
+
+    document.getElementById('modal-root').innerHTML = `
+    <div class="overlay flex items-center justify-center fixed inset-0 bg-black/50 z-[100] p-4">
+        <div class="bg-white p-8 rounded-3xl text-center border-t-8 border-amber-600 shadow-2xl w-full max-w-sm">
+            <h2 class="text-amber-600 font-black text-xl uppercase italic">Orden KS Generada</h2>
+            <div class="my-4 text-left text-xs space-y-2 border-y py-4 border-gray-100 font-bold text-gray-600 uppercase">
+                <p>Producto: <span class="text-black">${pedido.nombre}</span></p>
+                <p>Cantidad: <span class="text-black">${pedido.cantidad}</span></p>
+                <p>Monto: <span class="text-black">${simbolo}${precioFinal.toLocaleString('es-VE')}</span></p>
             </div>
-            <div class="p-12 flex-1 flex flex-col justify-center bg-white">
-                <h2 class="text-2xl font-black mb-6 text-gray-800 uppercase italic">Acceso B2B</h2>
-                <input type="email" placeholder="Usuario" class="mb-3 p-3 bg-gray-50 rounded-xl border-none ring-1 ring-gray-200 outline-none focus:ring-2 focus:ring-amber-500">
-                <input type="password" placeholder="Clave" class="mb-6 p-3 bg-gray-50 rounded-xl border-none ring-1 ring-gray-200 outline-none focus:ring-2 focus:ring-amber-500">
-                <button onclick="document.getElementById('modal-root').innerHTML=''" class="bg-black text-white font-black py-3 rounded-xl uppercase tracking-widest hover:bg-amber-600 transition">Entrar</button>
-                <button onclick="document.getElementById('modal-root').innerHTML=''" class="mt-4 text-[10px] font-bold text-gray-400 uppercase tracking-widest">Regresar al catálogo</button>
+            <button onclick="generarPDF_B2B('${pedido.nombre}', '${pedido.sede}', ${pedido.cantidad}, ${precioFinal}, '${simbolo}')" class="w-full bg-amber-600 text-white font-black py-3 rounded-xl uppercase mb-2">Descargar PDF</button>
+            <button onclick="document.getElementById('modal-root').innerHTML=''" class="w-full bg-black text-white font-black py-3 rounded-xl uppercase">Cerrar</button>
+        </div>
+    </div>`;
+}
+
+function generarPDF_B2B(prod, sede, cant, total, moneda) {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    doc.setFontSize(20); doc.setTextColor(184, 134, 11); doc.text("KS ALTA EFICIENCIA", 10, 20);
+    doc.setFontSize(12); doc.setTextColor(0); doc.text(`Pedido: ${prod} - Sede: ${sede}`, 10, 40);
+    doc.text(`Cantidad: ${cant} | Total: ${moneda} ${total.toLocaleString('es-VE')}`, 10, 50);
+    doc.save(`Pedido_KS_${prod}.pdf`);
+}
+
+// ==========================================
+// 5. NUEVO LOGIN CON REGISTRO INTEGRADO
+// ==========================================
+function mostrarInterfazLogin(modoRegistro = false) {
+    const root = document.getElementById('modal-root');
+    const contenido = modoRegistro ? `
+        <h2 class="text-2xl font-black mb-4 text-gray-800 uppercase italic">Crear Cuenta B2B</h2>
+        <input type="text" placeholder="Empresa / RIF" class="mb-2 p-3 bg-gray-50 rounded-xl border-2 border-gray-100 outline-none focus:border-amber-500 w-full text-xs font-bold">
+        <input type="email" placeholder="Correo" class="mb-2 p-3 bg-gray-50 rounded-xl border-2 border-gray-100 outline-none focus:border-amber-500 w-full text-xs font-bold">
+        <select class="mb-4 p-3 bg-gray-50 rounded-xl border-2 border-gray-100 text-xs font-black uppercase w-full outline-none focus:border-amber-600">
+            <option>Cliente Detal</option>
+            <option>Mayorista (+12 unidades)</option>
+        </select>
+        <button onclick="alert('Solicitud enviada')" class="bg-amber-600 text-white font-black py-3 rounded-xl uppercase w-full shadow-lg">Registrar</button>
+        <p class="mt-4 text-[9px] font-black text-center text-gray-400 uppercase">¿Ya tienes cuenta? <span onclick="mostrarInterfazLogin(false)" class="text-amber-600 cursor-pointer underline">Loguéate</span></p>
+    ` : `
+        <h2 class="text-2xl font-black mb-6 text-gray-800 uppercase italic">Acceso B2B</h2>
+        <input type="text" placeholder="Usuario" class="mb-3 p-3 bg-gray-50 rounded-xl border-2 border-gray-100 outline-none focus:border-amber-500 w-full text-xs font-bold">
+        <input type="password" placeholder="Clave" class="mb-6 p-3 bg-gray-50 rounded-xl border-2 border-gray-100 outline-none focus:border-amber-500 w-full text-xs font-bold">
+        <button onclick="alert('Ingresando...')" class="bg-black text-white font-black py-3 rounded-xl uppercase w-full shadow-lg">Entrar</button>
+        <p class="mt-6 text-[9px] font-black text-center text-gray-400 uppercase">¿Nuevo aquí? <span onclick="mostrarInterfazLogin(true)" class="text-amber-600 cursor-pointer underline">Regístrate</span></p>
+    `;
+
+    root.innerHTML = `
+    <div class="overlay fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[100] p-4">
+        <div class="bg-white flex flex-col md:flex-row rounded-[32px] overflow-hidden shadow-2xl max-w-2xl w-full h-auto border border-gray-100">
+            <div class="bg-black text-white p-10 flex-1 flex flex-col justify-center items-center text-center">
+                <h3 class="text-2xl font-black italic text-amber-500">KS AE</h3>
+                <p class="text-[8px] tracking-[0.4em] uppercase opacity-40 mt-2">Logística 2026</p>
+            </div>
+            <div class="p-8 md:p-12 flex-[1.5] flex flex-col justify-center relative bg-white">
+                <button onclick="document.getElementById('modal-root').innerHTML=''" class="absolute top-4 right-4 text-gray-300 hover:text-black font-bold text-xl">✕</button>
+                ${contenido}
             </div>
         </div>
     </div>`;
 }
 
-document.getElementById('btn-catalogo').addEventListener('click', (e) => {
-    e.preventDefault();
-    document.getElementById('seccion-inventario').scrollIntoView({ behavior: 'smooth' });
-});
-    
+
+
 
 
 
