@@ -1,9 +1,10 @@
 // ==========================================
 // 1. CONFIGURACIÓN Y ESTADO GLOBAL
 // ==========================================
-const TASA_BCV = 36.50; // Puedes actualizar este valor mañana
+const TASA_BCV = 36.50; 
 let mostrarEnBolivares = false;
 let inventario = [];
+let sedeActual = 'Todas';
 
 class Cl_Producto {
     constructor(nombre, sede, precioBase, cantidad = 1) {
@@ -41,102 +42,76 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function configurarEventos() {
-    // Evento para el botón de moneda (Usa delegación de eventos para mayor seguridad)
     document.addEventListener('click', (e) => {
         const btnMoneda = e.target.closest('#btn-moneda');
         if (btnMoneda) {
             mostrarEnBolivares = !mostrarEnBolivares;
             const textoBtn = document.getElementById('texto-boton-moneda');
             textoBtn.innerText = mostrarEnBolivares ? "Ver en Dólares ($)" : `Ver en Bs. (Tasa: ${TASA_BCV})`;
-            renderizar(inventario);
+            renderizar(sedeActual === 'Todas' ? inventario : inventario.filter(p => p.sede === sedeActual));
         }
 
-        // Abrir login
         if (e.target.closest('#open-login')) {
             e.preventDefault();
-            mostrarInterfazLogin(true);
+            mostrarInterfazLogin(false); // Inicia en modo Login por defecto
         }
     });
+
+    const btnCatalogo = document.getElementById('btn-catalogo');
+    if (btnCatalogo) {
+        btnCatalogo.addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById('seccion-inventario').scrollIntoView({ behavior: 'smooth' });
+        });
+    }
 }
 
 // ==========================================
-// 3. CARGA Y RENDERIZADO (EL CORAZÓN)
+// 3. CARGA Y RENDERIZADO
 // ==========================================
 async function cargarInventario() {
     try {
-        // Añadimos un preventivo de caché para que GitHub siempre lea la última versión
-        const res = await fetch('./ventas.json?v=' + Date.now()); 
-        if (!res.ok) throw new Error("Error HTTP: " + res.status);
+        const res = await fetch('ventas.json?v=' + Date.now());
+        if (!res.ok) throw new Error("No se pudo cargar el inventario");
         inventario = await res.json();
         renderizar(inventario);
     } catch (err) {
-        console.error("Fallo en la carga:", err);
-        // Si falla, cargamos al menos uno manualmente para que la página no se vea vacía
-        inventario = [{ "id": 99, "producto": "Error de Carga", "precio": 0, "stock": 0, "sede": "N/A" }];
-        renderizar(inventario);
+        console.error("Error crítico:", err);
+        alert("Atención: El inventario no cargó. Verifica ventas.json");
     }
 }
-// ==========================================
-// NUEVA LÓGICA DE NAVEGACIÓN Y STOCK
-// ==========================================
 
-let sedeActual = 'Todas'; // Controla qué estamos viendo
-
-// 1. Función para filtrar por sede (Se activa con los botones del HTML)
 function filtrarSede(sede) {
     sedeActual = sede;
-    
-    // Filtramos el inventario según la sede seleccionada
     const dataFiltrada = sede === 'Todas' ? inventario : inventario.filter(p => p.sede === sede);
-    
-    // Volvemos a dibujar los productos en pantalla
     renderizar(dataFiltrada);
 }
 
-// 2. Renderizado Actualizado (Ahora muestra el stock)
 function renderizar(data) {
     const lista = document.getElementById('lista-productos');
     if (!lista) return;
 
     lista.className = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8";
-
     lista.innerHTML = data.map(p => {
         const precioFinal = mostrarEnBolivares ? (p.precio * TASA_BCV) : p.precio;
         const simbolo = mostrarEnBolivares ? "Bs." : "$";
         const rutaImagen = `${p.producto}.jpg`; 
-// Esto buscará exactamente "Aceite 10W-40 Sintético.jpg" 
 
         return `
         <li class="bg-white rounded-2xl shadow-sm hover:shadow-2xl transition-all duration-500 border border-gray-100 p-6 flex flex-col items-center relative group overflow-hidden">
             <span class="absolute top-4 right-4 bg-black text-amber-500 text-[10px] font-black px-3 py-1 rounded-lg uppercase tracking-widest z-10">
                 ${p.sede}
             </span>
-            
             <div class="w-full h-44 mb-6 flex items-center justify-center rounded-xl bg-gray-50 p-2">
-                <img src="${rutaImagen}" 
-                     onerror="this.src='motores_v8.svg'; this.style.opacity='0.5';" 
-                     class="object-contain h-full w-full group-hover:scale-110 transition-transform duration-500"> 
+                <img src="${rutaImagen}" onerror="this.src='3.jpg'; this.style.opacity='0.5';" class="object-contain h-full w-full group-hover:scale-110 transition-transform duration-500"> 
             </div>
-
             <div class="text-center w-full">
-                <h3 class="text-gray-900 font-black text-[11px] mb-1 uppercase tracking-tight h-10 flex items-center justify-center leading-tight">
-                    ${p.producto}
-                </h3>
-                
-                <p class="text-[9px] font-bold text-gray-400 mb-2 uppercase">
-                    Disponible: <span class="${p.stock < 5 ? 'text-red-500' : 'text-green-600'}">${p.stock} unidades</span>
-                </p>
-
-                <p class="text-2xl font-black text-gray-900 tracking-tighter mb-4">
-                    ${simbolo}${precioFinal.toLocaleString('es-VE', { minimumFractionDigits: 2 })}
-                </p>
-                
+                <h3 class="text-gray-900 font-black text-[11px] mb-1 uppercase tracking-tight h-10 flex items-center justify-center leading-tight">${p.producto}</h3>
+                <p class="text-[9px] font-bold text-gray-400 mb-2 uppercase">Disponible: <span class="${p.stock < 5 ? 'text-red-500' : 'text-green-600'}">${p.stock} unid.</span></p>
+                <p class="text-2xl font-black text-gray-900 tracking-tighter mb-4">${simbolo}${precioFinal.toLocaleString('es-VE', { minimumFractionDigits: 2 })}</p>
                 <div class="flex items-center gap-2 w-full pt-4 border-t border-gray-100">
-                    <input type="number" id="q-${p.id}" value="1" min="1" max="${p.stock}" 
-                           class="w-12 bg-gray-50 border border-gray-200 rounded-lg p-2 text-center text-xs font-bold outline-none focus:ring-2 focus:ring-amber-500">
-                    <button onclick="procesarCompra(${p.id})" 
-                            ${p.stock <= 0 ? 'disabled' : ''}
-                            class="${p.stock <= 0 ? 'bg-gray-300 cursor-not-allowed' : 'bg-black hover:bg-amber-600'} flex-1 text-white font-black py-2.5 rounded-lg transition-all duration-300 text-[10px] tracking-widest uppercase shadow-md active:scale-95">
+                    <input type="number" id="q-${p.id}" value="1" min="1" max="${p.stock}" class="w-12 bg-gray-50 border border-gray-200 rounded-lg p-2 text-center text-xs font-bold outline-none focus:ring-2 focus:ring-amber-500">
+                    <button onclick="procesarCompra(${p.id})" ${p.stock <= 0 ? 'disabled' : ''} class="${p.stock <= 0 ? 'bg-gray-300' : 'bg-black hover:bg-amber-600'} flex-1 text-white font-black py-2.5 rounded-lg transition-all text-[10px] tracking-widest uppercase shadow-md">
                         ${p.stock <= 0 ? 'Agotado' : 'Añadir'}
                     </button>
                 </div>
@@ -145,97 +120,24 @@ function renderizar(data) {
     }).join('');
 }
 
-// 3. Procesar Compra con Descuento de Stock Real
+// ==========================================
+// 4. LÓGICA DE COMPRA Y PDF
+// ==========================================
 function procesarCompra(id) {
     const item = inventario.find(i => i.id === id);
     const cantInput = document.getElementById(`q-${id}`);
     const cant = parseInt(cantInput.value);
 
-    // Validación de seguridad
-    if (cant > item.stock) {
-        alert("Lo sentimos, no hay suficiente stock en esta sede.");
-        return;
-    }
+    if (cant > item.stock) { alert("Stock insuficiente"); return; }
 
-    // EL MOMENTO CLAVE: Restamos del stock local
     item.stock -= cant;
-
-    // Creamos el objeto del pedido (Aquí ya aplica tu lógica de descuento > 12)
     const pedido = new Cl_Producto(item.producto, item.sede, item.precio, cant);
     empresaKS.procesar(pedido);
     
-    // Actualizamos el contador del carrito en el menú
     document.getElementById('cart-count').innerText = empresaKS.contVentas;
-    
-    // Refrescamos la lista para que se vea el stock actualizado
     filtrarSede(sedeActual);
-    
-    // Mostramos el recibo/modal
     mostrarRecibo(pedido);
 }
-
-// NUEVA VERSIÓN DE MOSTRAR RECIBO CON BOTÓN PDF
-function mostrarRecibo(pedido) {
-    const precioFinal = mostrarEnBolivares ? (pedido.montoVenta() * TASA_BCV) : pedido.montoVenta();
-    const simbolo = mostrarEnBolivares ? "Bs." : "$";
-
-    document.getElementById('modal-root').innerHTML = `
-    <div class="overlay flex items-center justify-center fixed inset-0 bg-black/50 z-[100]">
-        <div class="bg-white p-8 rounded-3xl text-center border-t-8 border-amber-600 shadow-2xl w-[320px]">
-            <h2 class="text-amber-600 font-black text-xl uppercase italic">Orden KS</h2>
-            <div class="my-4 text-left text-xs space-y-2 border-y py-4 border-gray-100 font-bold text-gray-600 uppercase">
-                <p>Producto: <span class="text-black">${pedido.nombre}</span></p>
-                <p>Sede: <span class="text-black">${pedido.sede}</span></p>
-                <p>Cantidad: <span class="text-black">${pedido.cantidad}</span></p>
-            </div>
-            <h3 class="text-3xl font-black mb-6">${simbolo}${precioFinal.toLocaleString('es-VE', { minimumFractionDigits: 2 })}</h3>
-            <div class="flex flex-col gap-2">
-                <button onclick="generarPDF_B2B('${pedido.nombre}', '${pedido.sede}', ${pedido.cantidad}, ${precioFinal}, '${simbolo}')" 
-                        class="w-full bg-amber-600 text-white font-black py-3 rounded-xl uppercase tracking-widest hover:bg-amber-700 transition">
-                    Descargar Factura PDF
-                </button>
-                <button onclick="document.getElementById('modal-root').innerHTML=''" 
-                        class="w-full bg-black text-white font-black py-3 rounded-xl uppercase tracking-widest hover:bg-gray-800 transition">
-                    Cerrar
-                </button>
-            </div>
-        </div>
-    </div>`;
-}
-
-// ESTA FUNCIÓN VA AL FINAL DE TU ARCHIVO (Es la que crea el PDF)
-function generarPDF_B2B(prod, sede, cant, total, moneda) {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-    
-    // Diseño del PDF
-    doc.setFontSize(22);
-    doc.setTextColor(184, 134, 11); // Color ámbar de tu marca
-    doc.text("KS ALTA EFICIENCIA", 10, 20);
-    
-    doc.setFontSize(16);
-    doc.setTextColor(0, 0, 0);
-    doc.text("REPORTE DE PEDIDO B2B", 10, 30);
-    
-    doc.setFontSize(12);
-    doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 10, 45);
-    doc.text(`Sede de Despacho: ${sede}`, 10, 55);
-    
-    doc.setLineWidth(0.5);
-    doc.line(10, 60, 200, 60); // Línea divisoria
-    
-    doc.text(`Detalle del Producto: ${prod}`, 10, 70);
-    doc.text(`Cantidad Solicitada: ${cant} unidades`, 10, 80);
-    doc.text(`Monto Total: ${moneda} ${total.toLocaleString('es-VE', { minimumFractionDigits: 2 })}`, 10, 90);
-    
-    doc.setFontSize(10);
-    doc.setTextColor(100, 100, 100);
-    doc.text("Este documento es un comprobante digital generado por el sistema de gestión de KS.", 10, 110);
-    
-    // Descarga el archivo
-    doc.save(`Pedido_KS_${sede}_${prod}.pdf`);
-}
-
 
 function mostrarInterfazLogin(esLogin) {
     // Mantengo tu lógica de login pero encapsulada
@@ -263,6 +165,8 @@ document.getElementById('btn-catalogo').addEventListener('click', (e) => {
     document.getElementById('seccion-inventario').scrollIntoView({ behavior: 'smooth' });
 });
     
+
+
 
 
 
