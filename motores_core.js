@@ -172,39 +172,53 @@ function generarPDF_B2B(prod, sede, cant, total, moneda) {
 // ==========================================
 function mostrarInterfazLogin(modoRegistro = false) {
     const root = document.getElementById('modal-root');
-    const contenido = modoRegistro ? `
-        <h2 class="text-2xl font-black mb-4 text-gray-800 uppercase italic">Crear Cuenta B2B</h2>
-        <input type="text" placeholder="Empresa / RIF" class="mb-2 p-3 bg-gray-50 rounded-xl border-2 border-gray-100 outline-none focus:border-amber-500 w-full text-xs font-bold">
-        <input type="email" placeholder="Correo" class="mb-2 p-3 bg-gray-50 rounded-xl border-2 border-gray-100 outline-none focus:border-amber-500 w-full text-xs font-bold">
-        <select class="mb-4 p-3 bg-gray-50 rounded-xl border-2 border-gray-100 text-xs font-black uppercase w-full outline-none focus:border-amber-600">
-            <option>Cliente Detal</option>
-            <option>Mayorista (+12 unidades)</option>
-        </select>
-        <button onclick="alert('Solicitud enviada')" class="bg-amber-600 text-white font-black py-3 rounded-xl uppercase w-full shadow-lg">Registrar</button>
-        <p class="mt-4 text-[9px] font-black text-center text-gray-400 uppercase">¿Ya tienes cuenta? <span onclick="mostrarInterfazLogin(false)" class="text-amber-600 cursor-pointer underline">Loguéate</span></p>
-    ` : `
-        <h2 class="text-2xl font-black mb-6 text-gray-800 uppercase italic">Acceso B2B</h2>
-        <input type="text" placeholder="Usuario" class="mb-3 p-3 bg-gray-50 rounded-xl border-2 border-gray-100 outline-none focus:border-amber-500 w-full text-xs font-bold">
-        <input type="password" placeholder="Clave" class="mb-6 p-3 bg-gray-50 rounded-xl border-2 border-gray-100 outline-none focus:border-amber-500 w-full text-xs font-bold">
-        <button onclick="alert('Ingresando...')" class="bg-black text-white font-black py-3 rounded-xl uppercase w-full shadow-lg">Entrar</button>
-        <p class="mt-6 text-[9px] font-black text-center text-gray-400 uppercase">¿Nuevo aquí? <span onclick="mostrarInterfazLogin(true)" class="text-amber-600 cursor-pointer underline">Regístrate</span></p>
-    `;
+    
+    // 1. Definimos el HTML dinámico según el modo
+    let contenidoDinamico = "";
+    
+    if (modoRegistro) {
+        // HTML PARA CREAR CUENTA
+        contenidoDinamico = `
+            <h2 class="text-2xl font-black mb-4 text-gray-800 uppercase italic">Crear Cuenta B2B</h2>
+            <input type="text" placeholder="Empresa / RIF" class="mb-2 p-3 bg-gray-50 rounded-xl border-2 border-gray-100 outline-none focus:border-amber-500 w-full text-xs font-bold">
+            <input type="email" placeholder="Correo Corporativo" class="mb-2 p-3 bg-gray-50 rounded-xl border-2 border-gray-100 outline-none focus:border-amber-500 w-full text-xs font-bold">
+            <select class="mb-4 p-3 bg-gray-50 rounded-xl border-2 border-gray-100 text-xs font-black uppercase w-full outline-none focus:border-amber-600">
+                <option>Distribuidor Mayorista</option>
+                <option>Cliente Detal</option>
+            </select>
+            <button onclick="alert('Solicitud enviada a revisión')" class="bg-amber-600 text-white font-black py-3 rounded-xl uppercase w-full shadow-lg">Solicitar Acceso</button>
+            <p class="mt-4 text-[9px] font-black text-center text-gray-400 uppercase">
+                ¿Ya tienes cuenta? <span onclick="mostrarInterfazLogin(false)" class="text-amber-600 cursor-pointer underline hover:text-black transition-colors">Inicia Sesión</span>
+            </p>
+        `;
+    } else {
+        // HTML PARA INICIAR SESIÓN (Lo que ves ahora)
+        contenidoDinamico = `
+            <h2 class="text-2xl font-black mb-6 text-gray-800 uppercase italic">Acceso B2B</h2>
+            <input type="text" placeholder="Usuario" class="mb-3 p-3 bg-gray-50 rounded-xl border-2 border-gray-100 outline-none focus:border-amber-500 w-full text-xs font-bold">
+            <input type="password" placeholder="Clave" class="mb-6 p-3 bg-gray-50 rounded-xl border-2 border-gray-100 outline-none focus:border-amber-500 w-full text-xs font-bold">
+            <button onclick="alert('Ingresando al sistema...')" class="bg-black text-white font-black py-3 rounded-xl uppercase w-full shadow-lg hover:bg-amber-600 transition-all">Entrar</button>
+            <p class="mt-6 text-[9px] font-black text-center text-gray-400 uppercase">
+                ¿Nuevo distribuidor? <span onclick="mostrarInterfazLogin(true)" class="text-amber-600 cursor-pointer underline hover:text-black transition-colors">Regístrate aquí</span>
+            </p>
+        `;
+    }
 
+    // 2. Inyectamos todo el modal en el root
     root.innerHTML = `
     <div class="overlay fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[100] p-4">
-        <div class="bg-white flex flex-col md:flex-row rounded-[32px] overflow-hidden shadow-2xl max-w-2xl w-full h-auto border border-gray-100">
+        <div class="bg-white flex flex-col md:flex-row rounded-[32px] overflow-hidden shadow-2xl max-w-2xl w-full border border-gray-100 animate-in fade-in zoom-in duration-300">
             <div class="bg-black text-white p-10 flex-1 flex flex-col justify-center items-center text-center">
-                <h3 class="text-2xl font-black italic text-amber-500">KS AE</h3>
-                <p class="text-[8px] tracking-[0.4em] uppercase opacity-40 mt-2">Logística 2026</p>
+                <h3 class="text-2xl font-black italic text-amber-500">KS ALTA EFICIENCIA</h3>
+                <p class="text-[8px] tracking-[0.4em] uppercase opacity-40 mt-2 italic text-white">Distribuidores Exclusivos</p>
             </div>
             <div class="p-8 md:p-12 flex-[1.5] flex flex-col justify-center relative bg-white">
-                <button onclick="document.getElementById('modal-root').innerHTML=''" class="absolute top-4 right-4 text-gray-300 hover:text-black font-bold text-xl">✕</button>
-                ${contenido}
+                <button onclick="document.getElementById('modal-root').innerHTML=''" class="absolute top-4 right-4 text-gray-300 hover:text-black font-bold text-xl transition-colors">✕</button>
+                ${contenidoDinamico}
             </div>
         </div>
     </div>`;
 }
-
 
 
 
