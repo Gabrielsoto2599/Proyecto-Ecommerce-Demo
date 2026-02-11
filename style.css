@@ -109,5 +109,12 @@ button:active {
     transform: scale(0.95);
 }
 
-
+/* Estilo para resaltar la sede seleccionada */
+.sede-tab.activa {
+    background-color: #b8860b; /* Tu color ámbar */
+    color: white;
+    border-color: black;
+    transform: translateY(-2px);
+    box-shadow: 4px 4px 0px 0px rgba(0,0,0,1);
+}
 
