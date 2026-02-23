@@ -34,40 +34,39 @@ export default function CatalogoPage() {
 
       <div className="catalogo-grid max-w-7xl mx-auto">
         {/* Usamos la interfaz Producto aquí */}
-        {productosData.map((item: Producto) => (
-          <div key={item.id} className="product-card group">
-            <div className="relative flex justify-center items-center h-[240px] bg-white rounded-xl overflow-hidden border border-gray-100 transition-all">
-              <img 
-                src={item.imagen} 
-                alt={item.producto} 
-                className="max-h-[85%] w-auto object-contain transition-transform duration-500 group-hover:scale-110"
-                onError={(e) => { e.currentTarget.src = 'https://via.placeholder.com/400x400?text=Soto+System'; }}
-              />
-              <div className="absolute top-2 right-2 bg-black text-white text-[10px] px-2 py-1 rounded-md font-bold">
-                STOCK: {item.stock}
-              </div>
-            </div>
+        div key={item.id} className="product-card group">
+  {/* Imagen limpia sin textos encima para máxima elegancia */}
+  <div className="relative flex justify-center items-center h-[220px] bg-slate-50 rounded-2xl overflow-hidden mb-4">
+    <img 
+      src={item.imagen} 
+      alt={item.producto} 
+      className="max-h-[90%] w-auto object-contain transition-transform duration-700 group-hover:rotate-2 group-hover:scale-110"
+    />
+    {/* Stock ahora es una píldora discreta */}
+    <div className="absolute bottom-3 left-3 bg-white/90 backdrop-blur-sm text-slate-900 text-[9px] px-2 py-1 rounded-full font-black shadow-sm">
+      STOCK: {item.stock}
+    </div>
+  </div>
 
-            <div className="mt-5 flex flex-col flex-grow">
-              <span className="text-[10px] font-bold text-[var(--soto-blue)] uppercase mb-1">
-                Sede {item.sede}
-              </span>
-              <h3 className="text-sm font-bold text-gray-800 uppercase leading-tight mb-2 h-10 overflow-hidden">
-                {item.producto}
-              </h3>
-              
-              <div className="mt-auto border-t border-gray-50 pt-4">
-                <span className="precio-tag">$ {item.precio.toFixed(2)}</span>
-                <button className="btn-tecnicolor w-full mt-4">
-                  Solicitar Cotización
-                </button>
-              </div>
-            </div>
-          </div>
-        ))}
+  <div className="flex flex-col flex-grow">
+    {/* Sede con color de acento dinámico */}
+    <span className="text-[10px] font-extrabold text-blue-600 uppercase tracking-tighter mb-1">
+      ● {item.sede}
+    </span>
+    
+    <h3 className="text-[15px] font-bold text-slate-800 leading-tight mb-4 min-h-[40px]">
+      {item.producto}
+    </h3>
+    
+    <div className="mt-auto flex items-center justify-between border-t border-slate-100 pt-4">
+      <div className="flex flex-col">
+        <span className="text-[10px] text-slate-400 font-bold uppercase">Precio Unit.</span>
+        <span className="text-xl font-black text-slate-900">${item.precio.toFixed(2)}</span>
       </div>
-    </main>
-  );
-}
-
-
+      
+      <button className="btn-tecnicolor px-6">
+        Cotizar
+      </button>
+    </div>
+  </div>
+</div>
