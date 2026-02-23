@@ -1,5 +1,6 @@
 "use client";
-import Image from 'next/image'; // Importante para la optimización de Next.js
+import { useState } from 'react'; // <--- CORREGIDO: Importación necesaria
+import Image from 'next/image'; 
 import inventory from '../../public/ventas.json';
 
 interface Producto {
@@ -13,18 +14,49 @@ interface Producto {
 
 export default function CatalogoPage() {
   const productos = (inventory as unknown) as Producto[];
+  
+  // ESTADO PARA LA BÚSQUEDA
+  const [busqueda, setBusqueda] = useState("");
+  // 1. El estado de la búsqueda (Ya lo tenías)
   const [busqueda, setBusqueda] = useState("");
 
-// Esta es la lógica que filtra los 40 productos mientras escribes
-const productosFiltrados = productos.filter((item) =>
-  item.producto.toLowerCase().includes(busqueda.toLowerCase()) ||
-  item.sede.toLowerCase().includes(busqueda.toLowerCase())
-);
+  // 2. El estado de la categoría (Lo nuevo)
+  const [categoriaActiva, setCategoriaActiva] = useState("Todos");
+
+  // 3. UNA SOLA constante de filtrado que hace TODO el trabajo
+  const productosFiltrados = productos.filter((item) => {
+    // Primero: ¿Coincide con lo que escribí en la barra?
+    const coincideBusqueda = item.producto.toLowerCase().includes(busqueda.toLowerCase()) || 
+                             item.sede.toLowerCase().includes(busqueda.toLowerCase());
+    
+    // Segundo: ¿Coincide con el botón de categoría que toqué?
+    const coincideCategoria = categoriaActiva === "Todos" || item.producto.includes(categoriaActiva);
+    
+    // Solo si cumple AMBAS condiciones, el producto se muestra
+    return coincideBusqueda && coincideCategoria;
+  });
+
+  {/* Filtros de Categoría Rápidos */}
+<div className="flex flex-wrap gap-4 mb-8 justify-center">
+  {categorias.map((cat) => (
+    <button
+      key={cat}
+      onClick={() => setCategoriaActiva(cat)}
+      className={`px-6 py-2 rounded-full font-bold transition-all duration-300 shadow-lg ${
+        categoriaActiva === cat
+          ? "bg-gradient-to-r from-blue-600 to-cyan-400 text-white scale-110 shadow-blue-500/50"
+          : "bg-white text-slate-600 hover:bg-slate-50 border border-gray-100"
+      }`}
+    >
+      {cat}
+    </button>
+  ))}
+</div>
   return (
     <div className="min-h-screen bg-[#f3f4f6] p-6">
       <div className="max-w-7xl mx-auto">
         
-        {/* Encabezado Nivel SaaS de $10,000 */}
+        {/* Encabezado Nivel SaaS */}
         <div className="flex flex-col md:flex-row justify-between items-center mb-12 bg-white p-8 rounded-3xl shadow-sm border border-gray-100">
           <div>
             <h1 className="text-3xl font-black text-slate-900 tracking-tighter">
@@ -33,18 +65,30 @@ const productosFiltrados = productos.filter((item) =>
             <p className="text-slate-400 font-medium">Inventario B2B Multi-Sede</p>
           </div>
           <div className="mt-4 md:mt-0 px-6 py-2 bg-blue-50 text-blue-700 rounded-full font-bold text-sm border border-blue-100">
-            {productos.length} Productos en Red Nacional
+            {productosFiltrados.length} Productos encontrados
           </div>
         </div>
 
-        {/* El Grid que DOMA las imágenes gigantes */}
+        {/* BARRA DE BÚSQUEDA (El toque mágico Cyber-Disney) */}
+        <div className="relative mb-12 group">
+          <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-cyan-400 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-1000"></div>
+          <input
+            type="text"
+            placeholder="🔎 Buscar por nombre de repuesto o ciudad (Ej: Caracas, Piston...)"
+            className="relative w-full bg-white px-6 py-5 rounded-2xl border-none focus:ring-2 focus:ring-blue-500 shadow-xl text-slate-700 font-medium text-lg outline-none"
+            value={busqueda}
+            onChange={(e) => setBusqueda(e.target.value)}
+          />
+        </div>
+
+        {/* El Grid que DOMA las imágenes (Usando productosFiltrados) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-          {productos.map((item) => (
+          {productosFiltrados.map((item) => (
             <div 
               key={item.id} 
               className="group bg-white rounded-2xl shadow-sm hover:shadow-2xl border border-gray-200 overflow-hidden transition-all duration-300 flex flex-col h-[460px]"
             >
-              {/* Contenedor de Imagen con Altura FIJA (Esto quita lo "Gigante") */}
+              {/* Contenedor de Imagen con Altura FIJA */}
               <div className="h-52 w-full bg-white flex items-center justify-center p-6 relative overflow-hidden border-b border-gray-50">
                 <img 
                   src={item.imagen} 
@@ -52,8 +96,6 @@ const productosFiltrados = productos.filter((item) =>
                   className="max-h-full max-w-full object-contain group-hover:scale-110 transition-transform duration-500"
                   onError={(e) => { e.currentTarget.src = "https://via.placeholder.com/300?text=Revisar+Imagen"; }}
                 />
-
-                
               </div>
               
               {/* Información del Repuesto */}
@@ -90,7 +132,16 @@ const productosFiltrados = productos.filter((item) =>
             </div>
           ))}
         </div>
+
+        {/* Mensaje si no hay resultados */}
+        {productosFiltrados.length === 0 && (
+          <div className="text-center py-20">
+            <p className="text-xl text-slate-400 font-medium">No encontramos ningún repuesto que coincida con tu búsqueda. 🔍</p>
+          </div>
+        )}
       </div>
     </div>
   );
 }
+
+
