@@ -1,91 +1,46 @@
 [
-  {
-    "id": 1,
-    "producto": "Aceite 10W-40 Sintético",
-    "precio": 12.50,
-    "stock": 10,
-    "sede": "CARACAS",
-    "imagen": "/Aceite 10W-40 Sintético.jpg"
-  },
-  {
-    "id": 2,
-    "producto": "Aceite 15W-40 Diesel",
-    "precio": 9.50,
-    "stock": 10,
-    "sede": "CARACAS",
-    "imagen": "/Aceite 15W-40 Diesel.jpg"
-  },
-  {
-    "id": 3,
-    "producto": "Filtro Gasolina",
-    "precio": 4.50,
-    "stock": 10,
-    "sede": "MARACAIBO",
-    "imagen": "/Filtro Gasolina.jpg"
-  },
-  {
-    "id": 4,
-    "producto": "Pistón Cummins Heavy",
-    "precio": 120.00,
-    "stock": 10,
-    "sede": "MARACAIBO",
-    "imagen": "/Piston Cummins Heavy.jpg"
-  },
-  {
-    "id": 5,
-    "producto": "Amortiguador",
-    "precio": 45.00,
-    "stock": 10,
-    "sede": "VALENCIA",
-    "imagen": "/amortiguador.jpg"
-  },
-  {
-    "id": 6,
-    "producto": "Batería 800",
-    "precio": 85.00,
-    "stock": 10,
-    "sede": "VALENCIA",
-    "imagen": "/bateria_800.jpg"
-  },
-  {
-    "id": 7,
-    "producto": "Bujía Iridium",
-    "precio": 6.50,
-    "stock": 10,
-    "sede": "PUERTO ORDAZ",
-    "imagen": "/bujia_iridium.jpg"
-  },
-  {
-    "id": 8,
-    "producto": "Correa de Tiempo",
-    "precio": 25.00,
-    "stock": 10,
-    "sede": "PUERTO ORDAZ",
-    "imagen": "/correa_tiempo.jpg"
-  },
-  {
-    "id": 9,
-    "producto": "Filtro de Aire",
-    "precio": 8.00,
-    "stock": 10,
-    "sede": "CARACAS",
-    "imagen": "/filtro_aire.jpg"
-  },
-  {
-    "id": 10,
-    "producto": "Pastillas de Freno",
-    "precio": 35.00,
-    "stock": 10,
-    "sede": "VALENCIA",
-    "imagen": "/pastillas_freno.jpg"
-  },
-  {
-    "id": 11,
-    "producto": "Motor Cummins",
-    "precio": 2500.00,
-    "stock": 2,
-    "sede": "MARACAIBO",
-    "imagen": "/motor_cummins.jpg"
-  }
+  { "id": 1, "producto": "Aceite 10W-40 Sintetico", "precio": 12.50, "stock": 10, "sede": "CARACAS", "imagen": "/aceite_10w40.jpg" },
+  { "id": 2, "producto": "Aceite 15W-40 Diesel", "precio": 9.50, "stock": 10, "sede": "CARACAS", "imagen": "/aceite_15w40.jpg" },
+  { "id": 3, "producto": "Filtro Gasolina", "precio": 4.50, "stock": 10, "sede": "CARACAS", "imagen": "/filtro_gasolina.jpg" },
+  { "id": 4, "producto": "Piston Cummins Heavy", "precio": 120.00, "stock": 10, "sede": "CARACAS", "imagen": "/piston_cummins.jpg" },
+  { "id": 5, "producto": "Amortiguador Reforzado", "precio": 45.00, "stock": 10, "sede": "CARACAS", "imagen": "/amortiguador.jpg" },
+  { "id": 6, "producto": "Bateria 800 AMP", "precio": 85.00, "stock": 10, "sede": "CARACAS", "imagen": "/bateria_800.jpg" },
+  { "id": 7, "producto": "Bujia Iridium", "precio": 6.50, "stock": 10, "sede": "CARACAS", "imagen": "/bujia_iridium.jpg" },
+  { "id": 8, "producto": "Correa de Tiempo", "precio": 25.00, "stock": 10, "sede": "CARACAS", "imagen": "/correa_tiempo.jpg" },
+  { "id": 9, "producto": "Filtro de Aire", "precio": 8.00, "stock": 10, "sede": "CARACAS", "imagen": "/filtro_aire.jpg" },
+  { "id": 10, "producto": "Pastillas de Freno", "precio": 35.00, "stock": 10, "sede": "CARACAS", "imagen": "/pastillas_freno.jpg" },
+
+  { "id": 11, "producto": "Aceite 10W-40 Sintetico", "precio": 12.50, "stock": 10, "sede": "MARACAIBO", "imagen": "/aceite_10w40.jpg" },
+  { "id": 12, "producto": "Aceite 15W-40 Diesel", "precio": 9.50, "stock": 10, "sede": "MARACAIBO", "imagen": "/aceite_15w40.jpg" },
+  { "id": 13, "producto": "Filtro Gasolina", "precio": 4.50, "stock": 10, "sede": "MARACAIBO", "imagen": "/filtro_gasolina.jpg" },
+  { "id": 14, "producto": "Piston Cummins Heavy", "precio": 120.00, "stock": 10, "sede": "MARACAIBO", "imagen": "/piston_cummins.jpg" },
+  { "id": 15, "producto": "Amortiguador Reforzado", "precio": 45.00, "stock": 10, "sede": "MARACAIBO", "imagen": "/amortiguador.jpg" },
+  { "id": 16, "producto": "Bateria 800 AMP", "precio": 85.00, "stock": 10, "sede": "MARACAIBO", "imagen": "/bateria_800.jpg" },
+  { "id": 17, "producto": "Bujia Iridium", "precio": 6.50, "stock": 10, "sede": "MARACAIBO", "imagen": "/bujia_iridium.jpg" },
+  { "id": 18, "producto": "Correa de Tiempo", "precio": 25.00, "stock": 10, "sede": "MARACAIBO", "imagen": "/correa_tiempo.jpg" },
+  { "id": 19, "producto": "Filtro de Aire", "precio": 8.00, "stock": 10, "sede": "MARACAIBO", "imagen": "/filtro_aire.jpg" },
+  { "id": 20, "producto": "Pastillas de Freno", "precio": 35.00, "stock": 10, "sede": "MARACAIBO", "imagen": "/pastillas_freno.jpg" },
+
+  { "id": 21, "producto": "Aceite 10W-40 Sintetico", "precio": 12.50, "stock": 10, "sede": "VALENCIA", "imagen": "/aceite_10w40.jpg" },
+  { "id": 22, "producto": "Aceite 15W-40 Diesel", "precio": 9.50, "stock": 10, "sede": "VALENCIA", "imagen": "/aceite_15w40.jpg" },
+  { "id": 23, "producto": "Filtro Gasolina", "precio": 4.50, "stock": 10, "sede": "VALENCIA", "imagen": "/filtro_gasolina.jpg" },
+  { "id": 24, "producto": "Piston Cummins Heavy", "precio": 120.00, "stock": 10, "sede": "VALENCIA", "imagen": "/piston_cummins.jpg" },
+  { "id": 25, "producto": "Amortiguador Reforzado", "precio": 45.00, "stock": 10, "sede": "VALENCIA", "imagen": "/amortiguador.jpg" },
+  { "id": 26, "producto": "Bateria 800 AMP", "precio": 85.00, "stock": 10, "sede": "VALENCIA", "imagen": "/bateria_800.jpg" },
+  { "id": 27, "producto": "Bujia Iridium", "precio": 6.50, "stock": 10, "sede": "VALENCIA", "imagen": "/bujia_iridium.jpg" },
+  { "id": 28, "producto": "Correa de Tiempo", "precio": 25.00, "stock": 10, "sede": "VALENCIA", "imagen": "/correa_tiempo.jpg" },
+  { "id": 29, "producto": "Filtro de Aire", "precio": 8.00, "stock": 10, "sede": "VALENCIA", "imagen": "/filtro_aire.jpg" },
+  { "id": 30, "producto": "Pastillas de Freno", "precio": 35.00, "stock": 10, "sede": "VALENCIA", "imagen": "/pastillas_freno.jpg" },
+
+  { "id": 31, "producto": "Aceite 10W-40 Sintetico", "precio": 12.50, "stock": 10, "sede": "PUERTO ORDAZ", "imagen": "/aceite_10w40.jpg" },
+  { "id": 32, "producto": "Aceite 15W-40 Diesel", "precio": 9.50, "stock": 10, "sede": "PUERTO ORDAZ", "imagen": "/aceite_15w40.jpg" },
+  { "id": 33, "producto": "Filtro Gasolina", "precio": 4.50, "stock": 10, "sede": "PUERTO ORDAZ", "imagen": "/filtro_gasolina.jpg" },
+  { "id": 34, "producto": "Piston Cummins Heavy", "precio": 120.00, "stock": 10, "sede": "PUERTO ORDAZ", "imagen": "/piston_cummins.jpg" },
+  { "id": 35, "producto": "Amortiguador Reforzado", "precio": 45.00, "stock": 10, "sede": "PUERTO ORDAZ", "imagen": "/amortiguador.jpg" },
+  { "id": 36, "producto": "Bateria 800 AMP", "precio": 85.00, "stock": 10, "sede": "PUERTO ORDAZ", "imagen": "/bateria_800.jpg" },
+  { "id": 37, "producto": "Bujia Iridium", "precio": 6.50, "stock": 10, "sede": "PUERTO ORDAZ", "imagen": "/bujia_iridium.jpg" },
+  { "id": 38, "producto": "Correa de Tiempo", "precio": 25.00, "stock": 10, "sede": "PUERTO ORDAZ", "imagen": "/correa_tiempo.jpg" },
+  { "id": 39, "producto": "Filtro de Aire", "precio": 8.00, "stock": 10, "sede": "PUERTO ORDAZ", "imagen": "/filtro_aire.jpg" },
+  { "id": 40, "producto": "Pastillas de Freno", "precio": 35.00, "stock": 10, "sede": "PUERTO ORDAZ", "imagen": "/pastillas_freno.jpg" }
 ]
 
