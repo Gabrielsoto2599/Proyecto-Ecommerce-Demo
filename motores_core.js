@@ -61,11 +61,12 @@ function renderizar(data) {
     const lista = document.getElementById('lista-productos');
     if (!lista) return;
 
+    // RESTAURAMOS LA ESTRUCTURA HORIZONTAL (GRID) AQUÍ
+    lista.className = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 p-6";
+
     lista.innerHTML = data.map(p => {
         const precioFinal = mostrarEnBolivares ? (p.precio * TASA_BCV) : p.precio;
         const simbolo = mostrarEnBolivares ? "Bs." : "$";
-        
-        // Ajuste definitivo para las imágenes según tu carpeta public
         const rutaImagen = p.imagen;
 
         return `
@@ -79,7 +80,7 @@ function renderizar(data) {
                      onerror="this.src='https://via.placeholder.com/150?text=Motor'; this.style.opacity='0.5';" 
                      class="object-contain h-full w-full group-hover:scale-110 transition-transform duration-500"> 
             </div>
-            <div class="text-center w-full">
+            <div class="text-center w-full mt-auto">
                 <h3 class="text-gray-900 font-black text-[12px] mb-1 uppercase tracking-tight h-10 flex items-center justify-center leading-tight">
                     ${p.producto.replace(/_/g, ' ')} 
                 </h3>
@@ -125,7 +126,6 @@ function cambiarMoneda() {
         btnTexto.innerText = mostrarEnBolivares ? `Ver en $ (Tasa: ${TASA_BCV})` : `Ver en Bs. (Tasa: ${TASA_BCV})`;
     }
     
-    // Volvemos a renderizar según el filtro actual
     if (sedeActual === 'Todas') {
         renderizar(inventario);
     } else {
@@ -171,6 +171,69 @@ function abrirModalVenta(nombre, sede, precio) {
     </div>
     `;
 }
+
+function cerrarModal() {
+    document.getElementById('modal-root').innerHTML = '';
+}
+
+function procesarCompra(nombre, sede, precio) {
+    const cant = parseInt(document.getElementById('cant-venta').value);
+    if (isNaN(cant) || cant <= 0) return alert("Cantidad inválida");
+
+    const producto = new Cl_Producto(nombre, sede, precio, cant);
+    empresaKS.procesar(producto);
+    mostrarFactura(producto);
+}
+
+function mostrarFactura(prod) {
+    const root = document.getElementById('modal-root');
+    const montoBs = prod.montoVenta() * TASA_BCV;
+
+    root.innerHTML = `
+    <div class="overlay fixed inset-0 bg-black/90 backdrop-blur-xl flex items-center justify-center z-[100] p-4">
+        <div class="bg-white p-10 rounded-[40px] shadow-2xl max-w-md w-full border-t-8 border-amber-500 relative overflow-hidden">
+            <h2 class="text-center text-3xl font-black italic mb-2 tracking-tighter">ORDEN DE COMPRA</h2>
+            <p class="text-center text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] mb-10">Documento No Válido como Factura Fiscal</p>
+            
+            <div class="space-y-6 border-y-2 border-gray-50 py-8 mb-8">
+                <div class="flex justify-between text-sm"><span class="text-gray-500 font-bold uppercase">Producto:</span><span class="font-black text-gray-900">${prod.nombre.replace(/_/g, ' ')}</span></div>
+                <div class="flex justify-between text-sm"><span class="text-gray-500 font-bold uppercase">Sede:</span><span class="font-black text-gray-900">${prod.sede}</span></div>
+                <div class="flex justify-between text-sm"><span class="text-gray-500 font-bold uppercase">Cantidad:</span><span class="font-black text-gray-900">${prod.cantidad} Unds.</span></div>
+                <div class="flex justify-between text-sm border-t border-dashed pt-4"><span class="text-amber-600 font-black uppercase">Total USD:</span><span class="font-black text-2xl text-gray-900">$${prod.montoVenta().toFixed(2)}</span></div>
+                <div class="flex justify-between text-sm"><span class="text-gray-400 font-bold uppercase italic">Total Bs.:</span><span class="font-bold text-gray-400 italic">Bs. ${montoBs.toLocaleString('de-DE', {minimumFractionDigits: 2})}</span></div>
+            </div>
+
+            <button onclick="cerrarModal()" class="w-full bg-gray-100 text-gray-900 font-black uppercase tracking-widest py-4 rounded-xl hover:bg-black hover:text-white transition-all">
+                Finalizar y Salir
+            </button>
+        </div>
+    </div>
+    `;
+}
+
+function abrirLogin() {
+    const root = document.getElementById('modal-root');
+    root.innerHTML = `
+    <div class="overlay fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[100] p-4">
+        <div class="bg-white flex flex-col md:flex-row rounded-[32px] overflow-hidden shadow-2xl max-w-2xl w-full border border-gray-100 animate-in fade-in zoom-in duration-300">
+            <div class="bg-black text-white p-10 flex-1 flex flex-col justify-center items-center text-center">
+                <h3 class="text-2xl font-black italic text-amber-500">KS ALTA EFICIENCIA</h3>
+                <p class="text-[8px] tracking-[0.4em] uppercase opacity-40 mt-2 italic text-white">Distribuidores Exclusivos</p>
+            </div>
+            <div class="p-8 md:p-12 flex-[1.5] flex flex-col justify-center relative bg-white">
+                <button onclick="cerrarModal()" class="absolute top-4 right-6 text-gray-300 hover:text-black text-2xl">&times;</button>
+                <h4 class="text-xl font-black uppercase mb-2">Acceso B2B</h4>
+                <div class="space-y-4">
+                    <input type="email" placeholder="Correo Corporativo" class="w-full bg-gray-50 border-2 border-gray-100 rounded-xl p-4 text-sm font-bold focus:border-amber-500 outline-none transition-all">
+                    <input type="password" placeholder="Contraseña" class="w-full bg-gray-50 border-2 border-gray-100 rounded-xl p-4 text-sm font-bold focus:border-amber-500 outline-none transition-all">
+                    <button class="w-full bg-black text-white font-black uppercase tracking-widest py-4 rounded-xl hover:bg-amber-600 transition-all">Entrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    `;
+}
+
 
 
 
