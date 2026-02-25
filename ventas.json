@@ -1,8 +1,8 @@
 [
-  { "id": 1, "producto": "Aceite_10w40 Sintético", "precio": 12.50, "stock": 10, "sede": "Caracas", "imagen": "Aceite_10w40 Sintético.jpg" },
-  { "id": 2, "producto": "Aceite_15w40 Diesel", "precio": 9.50, "stock": 10, "sede": "Caracas", "imagen": "Aceite_15w40 Diesel.jpg" },
+  { "id": 1, "producto": "Aceite_10w40_Sintético", "precio": 12.50, "stock": 10, "sede": "Caracas", "imagen": "Aceite_10w40.jpg" },
+  { "id": 2, "producto": "Aceite_15w40_Diesel", "precio": 9.50, "stock": 10, "sede": "Caracas", "imagen": "Aceite_15w40.jpg" },
   { "id": 3, "producto": "Filtro_Gasolina", "precio": 4.50, "stock": 10, "sede": "Caracas", "imagen": "Filtro_Gasolina.jpg" },
-  { "id": 4, "producto": "Piston_Cummins Heavy", "precio": 120.00, "stock": 10, "sede": "Caracas", "imagen": "Piston_Cummins Heavy.jpg" },
+  { "id": 4, "producto": "Piston_Cummins_Heavy", "precio": 120.00, "stock": 10, "sede": "Caracas", "imagen": "Piston_Cummins.jpg" },
   { "id": 5, "producto": "amortiguador", "precio": 45.00, "stock": 10, "sede": "Caracas", "imagen": "amortiguador.jpg" },
   { "id": 6, "producto": "bateria_800", "precio": 85.00, "stock": 10, "sede": "Caracas", "imagen": "bateria_800.jpg" },
   { "id": 7, "producto": "bujia_iridium", "precio": 6.50, "stock": 10, "sede": "Caracas", "imagen": "bujia_iridium.jpg" },
@@ -10,10 +10,10 @@
   { "id": 9, "producto": "filtro_aire", "precio": 8.00, "stock": 10, "sede": "Caracas", "imagen": "filtro_aire.jpg" },
   { "id": 10, "producto": "pastillas_freno", "precio": 35.00, "stock": 10, "sede": "Caracas", "imagen": "pastillas_freno.jpg" },
 
-  { "id": 11, "producto": "Aceite_10w40 Sintético", "precio": 12.50, "stock": 10, "sede": "Maracaibo", "imagen": "Aceite_10w40 Sintético.jpg" },
-  { "id": 12, "producto": "Aceite_15w40", "precio": 9.50, "stock": 10, "sede": "Maracaibo", "imagen": "Aceite_15w40 Diesel.jpg" },
+  { "id": 11, "producto": "Aceite_10w40_Sintético", "precio": 12.50, "stock": 10, "sede": "Maracaibo", "imagen": "Aceite_10w40.jpg" },
+  { "id": 12, "producto": "Aceite_15w40", "precio": 9.50, "stock": 10, "sede": "Maracaibo", "imagen": "Aceite_15w40.jpg" },
   { "id": 13, "producto": "Filtro_Gasolina", "precio": 4.50, "stock": 10, "sede": "Maracaibo", "imagen": "Filtro_Gasolina.jpg" },
-  { "id": 14, "producto": "Piston_Cummins Heavy", "precio": 120.00, "stock": 10, "sede": "Maracaibo", "imagen": "Piston_Cummins Heavy.jpg" },
+  { "id": 14, "producto": "Piston_Cummins_Heavy", "precio": 120.00, "stock": 10, "sede": "Maracaibo", "imagen": "Piston_Cummins.jpg" },
   { "id": 15, "producto": "amortiguador", "precio": 45.00, "stock": 10, "sede": "Maracaibo", "imagen": "amortiguador.jpg" },
   { "id": 16, "producto": "bateria_800", "precio": 85.00, "stock": 10, "sede": "Maracaibo", "imagen": "bateria_800.jpg" },
   { "id": 17, "producto": "bujia_iridium", "precio": 6.50, "stock": 10, "sede": "Maracaibo", "imagen": "bujia_iridium.jpg" },
@@ -21,10 +21,10 @@
   { "id": 19, "producto": "filtro_aire", "precio": 8.00, "stock": 10, "sede": "Maracaibo", "imagen": "filtro_aire.jpg" },
   { "id": 20, "producto": "pastillas_freno", "precio": 35.00, "stock": 10, "sede": "Maracaibo", "imagen": "pastillas_freno.jpg" },
 
-  { "id": 21, "producto": "Aceite_10w40 Sintético", "precio": 12.50, "stock": 10, "sede": "Valencia", "imagen": "Aceite_10w40 Sintético.jpg" },
-  { "id": 22, "producto": "Aceite_15w40", "precio": 9.50, "stock": 10, "sede": "Valencia", "imagen": "Aceite_15w40 Diesel.jpg" },
+  { "id": 21, "producto": "Aceite_10w40_Sintético", "precio": 12.50, "stock": 10, "sede": "Valencia", "imagen": "Aceite_10w40.jpg" },
+  { "id": 22, "producto": "Aceite_15w40", "precio": 9.50, "stock": 10, "sede": "Valencia", "imagen": "Aceite_15w40.jpg" },
   { "id": 23, "producto": "Filtro_Gasolina", "precio": 4.50, "stock": 10, "sede": "Valencia", "imagen": "Filtro_Gasolina.jpg" },
-  { "id": 24, "producto": "Piston_Cummins Heavy", "precio": 120.00, "stock": 10, "sede": "Valencia", "imagen": "Piston_Cummins Heavy.jpg" },
+  { "id": 24, "producto": "Piston_Cummins_Heavy", "precio": 120.00, "stock": 10, "sede": "Valencia", "imagen": "Piston_Cummins.jpg" },
   { "id": 25, "producto": "amortiguador", "precio": 45.00, "stock": 10, "sede": "Valencia", "imagen": "amortiguador.jpg" },
   { "id": 26, "producto": "bateria_800", "precio": 85.00, "stock": 10, "sede": "Valencia", "imagen": "bateria_800.jpg" },
   { "id": 27, "producto": "bujia_iridium", "precio": 6.50, "stock": 10, "sede": "Valencia", "imagen": "bujia_iridium.jpg" },
@@ -32,10 +32,10 @@
   { "id": 29, "producto": "filtro_aire", "precio": 8.00, "stock": 10, "sede": "Valencia", "imagen": "filtro_aire.jpg" },
   { "id": 30, "producto": "pastillas_freno", "precio": 35.00, "stock": 10, "sede": "Valencia", "imagen": "pastillas_freno.jpg" },
 
-  { "id": 31, "producto": "Aceite_10w40 Sintético", "precio": 12.50, "stock": 10, "sede": "Puerto Ordaz", "imagen": "Aceite_10w40 Sintético.jpg" },
-  { "id": 32, "producto": "Aceite_15w40", "precio": 9.50, "stock": 10, "sede": "Puerto Ordaz", "imagen": "Aceite_15w40 Diesel.jpg" },
+  { "id": 31, "producto": "Aceite_10w40_Sintético", "precio": 12.50, "stock": 10, "sede": "Puerto Ordaz", "imagen": "Aceite_10w40.jpg" },
+  { "id": 32, "producto": "Aceite_15w40", "precio": 9.50, "stock": 10, "sede": "Puerto Ordaz", "imagen": "Aceite_15w40.jpg" },
   { "id": 33, "producto": "Filtro_Gasolina", "precio": 4.50, "stock": 10, "sede": "Puerto Ordaz", "imagen": "Filtro_Gasolina.jpg" },
-  { "id": 34, "producto": "Piston_Cummins Heavy", "precio": 120.00, "stock": 10, "sede": "Puerto Ordaz", "imagen": "Piston_Cummins Heavy.jpg" },
+  { "id": 34, "producto": "Piston_Cummins_Heavy", "precio": 120.00, "stock": 10, "sede": "Puerto Ordaz", "imagen": "Piston_Cummins.jpg" },
   { "id": 35, "producto": "amortiguador", "precio": 45.00, "stock": 10, "sede": "Puerto Ordaz", "imagen": "amortiguador.jpg" },
   { "id": 36, "producto": "bateria_800", "precio": 85.00, "stock": 10, "sede": "Puerto Ordaz", "imagen": "bateria_800.jpg" },
   { "id": 37, "producto": "bujia_iridium", "precio": 6.50, "stock": 10, "sede": "Puerto Ordaz", "imagen": "bujia_iridium.jpg" },
@@ -43,6 +43,7 @@
   { "id": 39, "producto": "filtro_aire", "precio": 8.00, "stock": 10, "sede": "Puerto Ordaz", "imagen": "filtro_aire.jpg" },
   { "id": 40, "producto": "pastillas_freno", "precio": 35.00, "stock": 10, "sede": "Puerto Ordaz", "imagen": "pastillas_freno.jpg" }
 ]
+
 
 
 
