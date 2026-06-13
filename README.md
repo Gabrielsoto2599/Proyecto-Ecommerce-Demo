@@ -1,10 +1,5 @@
 # 🚚 KS Alta Eficiencia - Ecosistema B2B SaaS de Distribución Logística Multisede
 
-![Next.js](https://shields.io)
-![Tailwind CSS](https://shields.io)
-![Architecture](https://shields.io)
-![Deployment](https://shields.io)
-
 **KS Alta Eficiencia** es una plataforma B2B transaccional de alto rendimiento diseñada específicamente para automatizar la cadena de suministro y la logística de distribución a nivel nacional. La aplicación implementa un catálogo inteligente preparado para gestionar inventarios masivos con alta concurrencia.
 
 Este desarrollo es el prototipo fundacional de la suite regional de facturación **Apio**, la cual integrará a **Daniela-IA** como el motor inteligente para la automatización de la toma de decisiones comerciales y operativas.
